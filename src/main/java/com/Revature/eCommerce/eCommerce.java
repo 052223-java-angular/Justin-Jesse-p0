@@ -1,6 +1,6 @@
-package com.mycompany.app;
+package com.Revature.eCommerce;
 
-public class App {
+public class eCommerce {
   public static void main(String args[]) {
     System.out.println("Welcome to eCommerce App!");
   }
