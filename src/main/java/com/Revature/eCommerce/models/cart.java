@@ -14,7 +14,6 @@ import lombok.ToString;
 public class Cart 
 {
     private String id;
-    private String productId;
     private String userId;
-    private int count;
+    private int amountSpent;
 }

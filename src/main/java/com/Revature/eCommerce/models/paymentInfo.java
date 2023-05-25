@@ -1,5 +1,7 @@
 package com.Revature.eCommerce.models;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,6 @@ public class PaymentInfo {
     private String id;
     private String userId;
     private int ccNumber;
+    private int cv;
+    private int expDate;
 }
