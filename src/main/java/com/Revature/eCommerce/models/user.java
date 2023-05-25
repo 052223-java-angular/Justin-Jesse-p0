@@ -14,14 +14,14 @@ import lombok.ToString;
 
 public class User
 {
-    private String id;    
+    private String user_id;    
     private String username;
     private String password;
     public User() {
     }
     
     public User(String username , String password){
-        this.id = UUID.randomUUID().toString();
+        this.user_id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
 
@@ -30,7 +30,7 @@ public class User
     
     public String getId()
     {
-        return this.id;
+        return this.user_id;
     }
     public String getUsername()
     {
@@ -44,7 +44,7 @@ public class User
 
     public void setId(String id)
     {
-        this.id = id;
+        this.user_id = user_id;
     }
     
     public void setUsername(String username)

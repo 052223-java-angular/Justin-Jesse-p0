@@ -110,13 +110,7 @@ public class LoginScreen implements IScreen
                 continue;
             }
 
-            if (!userService.isUniqueUsername(username)) {
-                clearScreen();
-                System.out.println("Username is not unique!");
-                System.out.print("\nPress enter to continue...");
-                scan.nextLine();
-                continue;
-            }
+            
 
             break;
         }
