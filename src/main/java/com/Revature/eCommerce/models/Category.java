@@ -16,4 +16,8 @@ public class Category
 {
     private String id;
     private String categoryName;
+    public void setName(String string) {
+        this.categoryName = categoryName;
+    }
+
 }
