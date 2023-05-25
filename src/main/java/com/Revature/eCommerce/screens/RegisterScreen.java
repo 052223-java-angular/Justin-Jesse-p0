@@ -69,9 +69,7 @@ public class RegisterScreen implements IScreen
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
                         break;
-                }
-
-               // break exit; 
+                } 
             }
         }
     }

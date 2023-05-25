@@ -23,9 +23,16 @@ public class UserService {
     //Checks to see if user is in datebase
     public User checkUser(String username, String password)
     {
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-        User user = new User(username, hashed);
-        return userDao.checkUser(user);
+        Optional<User> optionalUser = userDao.findByUsername(username);
+        if (optionalUser.isPresent())
+        {
+            User user = optionalUser.get();
+            if (BCrypt.checkpw(password, user.getPassword()))
+            {
+                return user;
+            }
+        }
+        return null;
     }
 
     public static boolean isValidUsername(String username) {

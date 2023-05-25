@@ -66,7 +66,7 @@ public class LoginScreen implements IScreen
                             System.out.println("Invalid username or password.");
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
-                            break exit;
+                            break;
                         }
                     case "n":
                         clearScreen();
@@ -109,8 +109,6 @@ public class LoginScreen implements IScreen
                 scan.nextLine();
                 continue;
             }
-
-            
 
             break;
         }
