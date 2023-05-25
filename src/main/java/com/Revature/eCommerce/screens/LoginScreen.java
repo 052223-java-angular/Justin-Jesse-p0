@@ -87,7 +87,6 @@ public class LoginScreen implements IScreen
                 //break exit; 
             }
         }
-        throw new UnsupportedOperationException("Unimplemented method 'start'");
     }
 
     private String getUsername(Scanner scan) 
