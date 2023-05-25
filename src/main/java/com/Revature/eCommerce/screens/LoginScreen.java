@@ -2,35 +2,34 @@ package com.Revature.eCommerce.screens;
 
 import java.util.Scanner;
 
-import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.User;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.services.UserService;
+import com.Revature.eCommerce.utils.Session;
 
-//@AllArgsConstructor
-public class RegisterScreen implements IScreen 
+public class LoginScreen implements IScreen 
 {
-    private final UserService userService;
-    private final RouterService router;
-    private Session session;
 
-    public RegisterScreen(UserService userService, RouterService router, Session session)
-    {
-        this.userService = userService;
+    private final RouterService router;
+    private final UserService userService;
+    private final Session session;
+
+    public LoginScreen(UserService userService, RouterService router, Session session) {
         this.router = router;
+        this.userService = userService;
         this.session = session;
     }
 
     @Override
-    public void start(Scanner scan) {
-        String input = "";
+    public void start(Scanner scan)
+     {
         String username = "";
         String password = "";
 
         exit: {
             while (true) {
                 clearScreen();
-                System.out.println("Welcome to the register screen!");
+                System.out.println("Welcome to the login screen!");
 
                 username = getUsername(scan);
 
@@ -46,17 +45,29 @@ public class RegisterScreen implements IScreen
                 }
 
                 clearScreen();
-                System.out.println("Please confirm your credentials:");
                 System.out.println("\nUsername: " + username);
                 System.out.println("Password: " + password);
-                System.out.print("\nEnter (y/n): ");
+                System.out.print("\nSubmit? (y/n): ");
 
+                //This goes back to  menu once user logs in
                 switch (scan.nextLine()) {
                     case "y":
-                        User createdUser = userService.register(username, password);
-                        session.setSession(createdUser);
-                        router.navigate("/login", scan);
+                        User validUser = userService.checkUser(username, password);
+
+                        if(validUser!=null)
+                        {
+                        session.setSession(validUser);
+                        router.navigate("/menu", scan);
                         break exit;
+                        }
+                        else
+                        {
+                            clearScreen();
+                            System.out.println("Invalid username or password.");
+                            System.out.print("\nPress enter to continue...");
+                            scan.nextLine();
+                            break exit;
+                        }
                     case "n":
                         clearScreen();
                         System.out.println("Restarting process...");
@@ -71,12 +82,16 @@ public class RegisterScreen implements IScreen
                         break;
                 }
 
-               // break exit; 
+
+
+                //break exit; 
             }
         }
+        throw new UnsupportedOperationException("Unimplemented method 'start'");
     }
 
-    public String getUsername(Scanner scan) {
+    private String getUsername(Scanner scan) 
+    {
         String username = "";
 
         while (true) {
@@ -88,7 +103,7 @@ public class RegisterScreen implements IScreen
             }
 
             if (!userService.isValidUsername(username)) {
-                clearScreen();
+               clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -109,7 +124,8 @@ public class RegisterScreen implements IScreen
         return username;
     }
 
-    public String getPassword(Scanner scan) {
+
+    private String getPassword(Scanner scan) {
         String password = "";
         String confirmPassword = "";
 
@@ -128,22 +144,6 @@ public class RegisterScreen implements IScreen
                 scan.nextLine();
                 continue;
             }
-
-            System.out.print("\nPlease confirm password (x to cancel): ");
-            confirmPassword = scan.nextLine();
-
-            if (confirmPassword.equalsIgnoreCase("x")) {
-                return "x";
-            }
-
-            if (!userService.isSamePassword(password, confirmPassword)) {
-                clearScreen();
-                System.out.println("Passwords do not match");
-                System.out.print("\nPress enter to continue...");
-                scan.nextLine();
-                continue;
-            }
-
             break;
         }
 
@@ -154,4 +154,5 @@ public class RegisterScreen implements IScreen
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+    
 }

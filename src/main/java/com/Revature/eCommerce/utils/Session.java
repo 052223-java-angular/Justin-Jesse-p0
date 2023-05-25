@@ -21,4 +21,9 @@ public class Session {
         this.username = user.getUsername();
 
     }
+
+    public String getUsername()
+    {
+        return this.username;
+    }
 }

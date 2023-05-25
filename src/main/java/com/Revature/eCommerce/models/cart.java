@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class cart 
+public class Cart 
 {
     private String id;
     private String productId;

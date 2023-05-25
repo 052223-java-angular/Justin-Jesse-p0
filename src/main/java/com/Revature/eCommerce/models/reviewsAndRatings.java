@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class reviewsAndRatings 
+public class ReviewsAndRatings 
 {
     private String id;    
     private String userId;

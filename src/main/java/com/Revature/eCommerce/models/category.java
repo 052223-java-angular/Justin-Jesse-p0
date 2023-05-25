@@ -12,7 +12,7 @@ import lombok.ToString;
     @Setter
     @ToString
     
-public class category
+public class Category
 {
     private String id;
     private String categoryName;

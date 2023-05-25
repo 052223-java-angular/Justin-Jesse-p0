@@ -2,17 +2,26 @@ package com.Revature.eCommerce.services;
 
 import java.util.Scanner;
 
-import com.Revature.eCommerce.dao.userDAO;
+import com.Revature.eCommerce.dao.UserDAO;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.screens.HomeScreen;
+import com.Revature.eCommerce.screens.LoginScreen;
 import com.Revature.eCommerce.screens.MenuScreen;
 import com.Revature.eCommerce.screens.RegisterScreen;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
-public class routerService {
+//@AllArgsConstructor
+//@NoArgsConstructor
+public class RouterService {
     private Session session;
+
+    public RouterService()
+    {
+        
+    }
+    public RouterService(Session session)
+    {
+        this.session = session;
+    }
 
     public void navigate(String path, Scanner scan) {
         switch (path) {
@@ -20,6 +29,7 @@ public class routerService {
                 new HomeScreen(this).start(scan);
                 break;
             case "/login":
+                new LoginScreen(getUserService(), this, session).start(scan);
                 break;
             case "/menu":
                 new MenuScreen(session).start(scan);
@@ -43,8 +53,8 @@ public class routerService {
     }
 
 
-    private userService getUserService() {
-        return new userService(new userDAO());
+    private UserService getUserService() {
+        return new UserService(new UserDAO());
     }
 
 

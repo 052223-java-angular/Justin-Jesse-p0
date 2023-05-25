@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class paymentInfo {
+public class PaymentInfo {
     private String id;
     private String userId;
     private int ccNumber;

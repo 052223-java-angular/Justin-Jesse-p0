@@ -2,14 +2,14 @@ package com.Revature.eCommerce.services;
 
 import java.util.Optional;
 import org.mindrot.jbcrypt.BCrypt;
-import com.Revature.eCommerce.dao.userDAO;
+import com.Revature.eCommerce.dao.UserDAO;
 import com.Revature.eCommerce.models.User;
 
-public class userService {
+public class UserService {
 
-    private final userDAO userDao;
+    private final UserDAO userDao;
 
-    public userService(userDAO userDao) {
+    public UserService(UserDAO userDao) {
         this.userDao = userDao;
     }
 
@@ -20,7 +20,15 @@ public class userService {
         return newUser;
     }
 
-    public boolean isValidUsername(String username) {
+    //Checks to see if user is in datebase
+    public User checkUser(String username, String password)
+    {
+        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+        User user = new User(username, hashed);
+        return userDao.checkUser(user);
+    }
+
+    public static boolean isValidUsername(String username) {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
 

@@ -6,11 +6,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class connectionFaction {
-    private static connectionFaction instance;
+public class ConnectionFaction {
+    private static ConnectionFaction instance;
     private Connection connection;
 
-    private connectionFaction() throws IOException, SQLException, ClassNotFoundException {
+    private ConnectionFaction() throws IOException, SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
         Properties props = getProperties();
         connection = DriverManager.getConnection(props.getProperty("url"), props.getProperty("username"),
@@ -18,9 +18,9 @@ public class connectionFaction {
     }
 
 //Method
-    public static connectionFaction getInstance() throws ClassNotFoundException, IOException, SQLException {
+    public static ConnectionFaction getInstance() throws ClassNotFoundException, IOException, SQLException {
         if (instance == null || instance.getConnection().isClosed()) {
-            instance = new connectionFaction();
+            instance = new ConnectionFaction();
         }
         return instance;
     }

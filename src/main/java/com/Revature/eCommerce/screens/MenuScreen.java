@@ -1,11 +1,16 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 import com.Revature.eCommerce.utils.Session;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class MenuScreen implements IScreen {
     private Session session;
+
+    public MenuScreen(Session session)
+    {
+        this.session = session;
+    }
 
     @Override
     public void start(Scanner scan) {

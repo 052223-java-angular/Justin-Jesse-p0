@@ -1,6 +1,6 @@
 package com.Revature.eCommerce.dao;
 
-import java.io.IOError;
+//import java.io.IOError;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 import com.Revature.eCommerce.models.User;
-import com.Revature.eCommerce.utils.connectionFaction;
+import com.Revature.eCommerce.utils.ConnectionFaction;
 
 
-public class userDAO implements crudDAO<User> {
+public class UserDAO implements CrudDAO<User> {
 
     @Override
     public void save(User obj) {
-        try (Connection conn = connectionFaction.getInstance().getConnection()) {
-            String sql = "INSERT INTO users (id, username, password, role_id) VALUES (?, ?, ?, ?)";
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "INSERT INTO users (id, username, password) VALUES (?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
@@ -36,32 +36,29 @@ public class userDAO implements crudDAO<User> {
         }
     }
 
+
     @Override
     public void update(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public void delete(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
     @Override
     public User findById(String id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     @Override
     public List<User> findAll() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
     public Optional<User> findByUsername(String username) {
-        try (Connection conn = connectionFaction.getInstance().getConnection()) {
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
             String sql = "SELECT * FROM users WHERE username = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -88,5 +85,37 @@ public class userDAO implements crudDAO<User> {
 
         return Optional.empty();
     }
+    // Retrieve a user from database
+    public User checkUser(User user)
+    { try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User validUser = new User();
+                    validUser.setId(rs.getString("id"));
+                    validUser.setUsername(rs.getString("username"));
+                    validUser.setPassword(rs.getString("password"));
+                    return validUser;
+                }
+            }
+        }
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Unable to connect to db");
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties");
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Unable to load jdbc");
+    }
+
+
+        return null;
+    }
+    
 
 }

@@ -1,15 +1,15 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
-import com.Revature.eCommerce.services.routerService;
-import lombok.AllArgsConstructor;
-@AllArgsConstructor
+import com.Revature.eCommerce.services.RouterService;
 
 public class HomeScreen implements IScreen{
-    private final routerService router;
-
-   // public homeScreen(routerService routerService) {}
+    private final RouterService router;
 
 
+
+    public HomeScreen(RouterService router) {
+        this.router = router;
+    }
 
 	@Override
     public void start(Scanner scan) {
@@ -29,6 +29,7 @@ public class HomeScreen implements IScreen{
 
                 switch (input.toLowerCase()) {
                     case "1":
+                        router.navigate("/login", scan);
                         break;
                     case "2":
                         router.navigate("/register", scan);
