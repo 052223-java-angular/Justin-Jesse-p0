@@ -1,18 +1,18 @@
 package com.Revature.eCommerce.screens;
-import com.Revature.eCommerce.services.RouterService;
 import java.util.Scanner;
 import com.Revature.eCommerce.utils.Session;
-
+import com.Revature.eCommerce.services.RouterService;
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class MenuScreen implements IScreen {
     private Session session;
     private final RouterService router;
 
-    public MenuScreen(Session session, RouterService router)
+    public MenuScreen(RouterService router, Session session)
     {
-        this.session = session;
         this.router = router;
+        this.session = session;
+
     }
 
     @Override
@@ -29,18 +29,18 @@ public class MenuScreen implements IScreen {
                 System.out.println("Press [3] to View Cart.");
                 System.out.println("Press [4] to Checkout");
                 System.out.println("Press [5] to View History");
-                System.out.println("Press [X] to Logout");
+                System.out.println("Press [X] to exit the application.");
 
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();
 
                 switch (input.toLowerCase()) {
                     case "1":
+                    router.navigate("/browse", scan);
                         break exit;
                     case "2":
                         break exit;
                     case "3":
-                        new CartScreen(session).start(scan);
                         break exit;
                     case "4":
                         break exit;

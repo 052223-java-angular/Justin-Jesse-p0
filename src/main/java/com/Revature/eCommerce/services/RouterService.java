@@ -4,23 +4,25 @@ import java.util.Scanner;
 
 import com.Revature.eCommerce.dao.UserDAO;
 import com.Revature.eCommerce.utils.Session;
+import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.screens.HomeScreen;
 import com.Revature.eCommerce.screens.LoginScreen;
 import com.Revature.eCommerce.screens.MenuScreen;
 import com.Revature.eCommerce.screens.RegisterScreen;
-
+import com.Revature.eCommerce.screens.BrowseScreen;
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class RouterService {
     private Session session;
-
+    private ProductDAO productDao;
     public RouterService()
     {
         
     }
-    public RouterService(Session session)
+    public RouterService(Session session, ProductDAO productDao)
     {
         this.session = session;
+        this.productDao = productDao;
     }
 
     public void navigate(String path, Scanner scan) {
@@ -32,12 +34,13 @@ public class RouterService {
                 new LoginScreen(getUserService(), this, session).start(scan);
                 break;
             case "/menu":
-                new MenuScreen(session, this).start(scan);
+                new MenuScreen(this, session).start(scan);
                 break;
             case "/register":
                 new RegisterScreen(getUserService(), this, session).start(scan);
                 break;
-            case "/product":
+            case "/browse":
+            new BrowseScreen(this, session, productDao).start(scan);
                 break;
             case "/cart":
                 break;
@@ -45,12 +48,10 @@ public class RouterService {
                 break;
             case "/review":
                 break;
-            case "/history":
-                break;
             default:
-                //log an error or throw a custom exception?
-                System.out.println("Invalid path!");
-                break;
+            case "/history":
+            break;
+
         }
     }
 
