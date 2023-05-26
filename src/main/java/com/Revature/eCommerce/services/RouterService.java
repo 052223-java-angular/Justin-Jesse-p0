@@ -32,7 +32,7 @@ public class RouterService {
                 new LoginScreen(getUserService(), this, session).start(scan);
                 break;
             case "/menu":
-                new MenuScreen(session).start(scan);
+                new MenuScreen(session, this).start(scan);
                 break;
             case "/register":
                 new RegisterScreen(getUserService(), this, session).start(scan);
@@ -45,10 +45,12 @@ public class RouterService {
                 break;
             case "/review":
                 break;
-            default:
             case "/history":
-            break;
-
+                break;
+            default:
+                //log an error or throw a custom exception?
+                System.out.println("Invalid path!");
+                break;
         }
     }
 

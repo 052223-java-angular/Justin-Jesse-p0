@@ -17,4 +17,5 @@ public class Product
     private String productName;
     private String categoryId;
     private int pricing;
+    private String description;
 }

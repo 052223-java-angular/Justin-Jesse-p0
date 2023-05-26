@@ -2,12 +2,14 @@ package com.Revature.eCommerce.models;
 
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+@NoArgsConstructor
 @AllArgsConstructor
-//@NoArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -17,8 +19,7 @@ public class User
     private String user_id;    
     private String username;
     private String password;
-    public User() {
-    }
+    private String roleId;
     
     public User(String username , String password){
         this.user_id = UUID.randomUUID().toString();
