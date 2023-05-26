@@ -1,15 +1,18 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 import com.Revature.eCommerce.utils.Session;
-
+import com.Revature.eCommerce.services.RouterService;
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class MenuScreen implements IScreen {
     private Session session;
+    private final RouterService router;
 
-    public MenuScreen(Session session)
+    public MenuScreen(RouterService router, Session session)
     {
+        this.router = router;
         this.session = session;
+
     }
 
     @Override
@@ -33,6 +36,7 @@ public class MenuScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                     case "1":
+                    router.navigate("/browse", scan);
                         break exit;
                     case "2":
                         break exit;
