@@ -27,15 +27,15 @@ public class BrowseScreen implements IScreen {
         exit: {
             while (true) {
                 clearScreen();
-                System.out.println("Username: " + session.getUsername());
+                //System.out.println("Username: " + session.getUsername());
                 displayProducts();
 
-                System.out.println("\nPress Enter to go to next page.");
+/*                 System.out.println("\nPress Enter to go to next page.");
                 System.out.println("Press [B] to go back.");
                 System.out.println("Press [A] to go add product to cart.");
                 System.out.println("Press [X] to back to Menu Screen.");
 
-                System.out.print("\nEnter: ");
+                System.out.print("\nEnter: "); */
                 input = scan.nextLine();
 
                 switch (input.toLowerCase()) {
@@ -72,16 +72,54 @@ public class BrowseScreen implements IScreen {
     }
     public void displayProducts() {
         List<Product> productList = productDAO.getAllProducts();
-
+        int listSize = productList.size();
+        boolean exit = false; 
+        int index = 0;
+        Scanner scan = new Scanner(System.in);
         System.out.println("Product List:");
         System.out.println("-----------------------------");
-        for (Product product : productList) {
+        while(!exit){
+
+        Product product = productList.get(index);
+            System.out.println("Username: " + session.getUsername() + "\n");
+
             System.out.println("Product ID: " + product.getProductId());
             System.out.println("Name: " + product.getProductName());
             System.out.println("Category ID: " + product.getCategoryId());
             System.out.println("Pricing: " + product.getPricing());
             System.out.println("Description: " + product.getDescription());
             System.out.println("-----------------------------");
+
+
+            System.out.println("\n \nPress Enter to go to next page.");
+            System.out.println("Press [B] to go back.");
+            System.out.println("Press [A] to go add product to cart.");
+            System.out.println("Press [X] to back to Menu Screen.");
+            System.out.print("");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().trim();
+            if (input.equalsIgnoreCase("X")){
+                clearScreen();
+                exit = true;
+                router.navigate("/menu", scan);
+
+            }
+            else{
+
+                clearScreen();
+            if (input.equalsIgnoreCase("B")){
+                index--;
+            }
+            else{
+                index++;
+            }
+                if (index>=listSize){
+                    index = 0;
+                }
+                if(index < 0){
+                    index = listSize - 1;
+                }
+            }
         }
     }
 }
