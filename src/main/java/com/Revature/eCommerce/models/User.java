@@ -21,14 +21,14 @@ public class User
     private String password;
     private String roleId;
     
-    public User(String username , String password){
+    public User(String username , String password, String roleId){
         this.user_id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
-
+        this.roleId = roleId;
     }
 
-    
+
     public String getId()
     {
         return this.user_id;

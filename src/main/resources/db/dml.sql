@@ -13,3 +13,6 @@ VALUES
 ('P5', 'Oragnic Bananas', '2', 3, 'Organic Bananas bundle of high nutrients'),
 ('P6', 'Watermelon', '2', 5, 'Freshly Grown Watermelons!'),
 ('P7', 'Hunger Games', '3', 15, 'Bestselling Novel!!!');
+
+INSERT INTO ROLES (id, name) VALUES ('590716c5-9eea-4283-a3d3-e83d2f508297', 'ADMIN');
+INSERT INTO ROLES (id, name) VALUES ('590716c5-9eea-4653-a3d3-e83d2f508297', 'USER');

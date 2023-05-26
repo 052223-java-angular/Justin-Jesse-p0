@@ -2,6 +2,7 @@ package com.Revature.eCommerce.services;
 
 import java.util.Scanner;
 
+import com.Revature.eCommerce.dao.RoleDAO;
 import com.Revature.eCommerce.dao.UserDAO;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.dao.ProductDAO;
@@ -56,9 +57,12 @@ public class RouterService {
     }
 
 
-    private UserService getUserService() {
-        return new UserService(new UserDAO());
+    private UserService getUserService()
+    {
+        return new UserService(new UserDAO(), getRoleService());
     }
 
-
+    private RoleService getRoleService(){
+        return new RoleService(new RoleDAO());
+    }
 }

@@ -10,4 +10,7 @@ import lombok.*;
 public class Role {
     private String id;
     private String roleName;
+
+    public void setName(String name) {
+    }
 }

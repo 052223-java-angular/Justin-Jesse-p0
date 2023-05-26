@@ -18,12 +18,13 @@ public class UserDAO implements CrudDAO<User> {
     @Override
     public void save(User obj) {
         try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-            String sql = "INSERT INTO users (user_id, username, password) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users (user_id, username, password, role_ID) VALUES (?, ?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
                 ps.setString(2, obj.getUsername());
                 ps.setString(3, obj.getPassword());
+                ps.setString(4, obj.getRoleId());
                 ps.executeUpdate();
             }
 
@@ -70,6 +71,7 @@ public class UserDAO implements CrudDAO<User> {
                         user.setId(rs.getString("user_id"));
                         user.setUsername(rs.getString("username"));
                         user.setPassword(rs.getString("password"));
+                        user.setRoleId(rs.getString("role_id"));
                         return Optional.of(user);
                     }
                 }

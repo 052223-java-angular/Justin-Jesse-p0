@@ -1,21 +1,28 @@
 package com.Revature.eCommerce.services;
 
 import java.util.Optional;
+
+import com.Revature.eCommerce.models.Role;
 import org.mindrot.jbcrypt.BCrypt;
 import com.Revature.eCommerce.dao.UserDAO;
 import com.Revature.eCommerce.models.User;
+import com.Revature.eCommerce.services.RoleService;
 
 public class UserService {
 
     private final UserDAO userDao;
+    private final RoleService roleServices;
 
-    public UserService(UserDAO userDao) {
+    public UserService(UserDAO userDao, RoleService roleServices)
+    {
         this.userDao = userDao;
+        this.roleServices = roleServices;
     }
 
     public User register(String username, String password) {
+        Role foundFound = roleServices.findByName("USER");
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-        User newUser = new User(username, hashed);
+        User newUser = new User(username, hashed, foundFound.getId());
         userDao.save(newUser);
         return newUser;
     }
