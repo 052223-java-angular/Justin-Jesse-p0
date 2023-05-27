@@ -16,11 +16,11 @@ import lombok.ToString;
 
 public class User
 {
-    private String user_id;    
+    private String user_id;
     private String username;
     private String password;
     private String roleId;
-    
+
     public User(String username , String password, String roleId){
         this.user_id = UUID.randomUUID().toString();
         this.username = username;
@@ -29,7 +29,7 @@ public class User
     }
 
 
-    public String getId()
+    public String getUserId()
     {
         return this.user_id;
     }
@@ -43,11 +43,11 @@ public class User
         return this.password;
     }
 
-    public void setId(String id)
+    public void setUserId(String id)
     {
         this.user_id = user_id;
     }
-    
+
     public void setUsername(String username)
     {
         this.username = username;
@@ -59,6 +59,6 @@ public class User
     }
 
 
-    
+
 
 }

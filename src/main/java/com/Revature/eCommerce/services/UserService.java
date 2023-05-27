@@ -30,7 +30,8 @@ public class UserService {
     //Checks to see if user is in datebase
     public User checkUser(String username, String password)
     {
-        Optional<User> optionalUser = userDao.findByUsername(username);
+        /* Currently out for testing cart
+       Optional<User> optionalUser = userDao.findByUsername(username);
         if (optionalUser.isPresent())
         {
             User user = optionalUser.get();
@@ -39,7 +40,8 @@ public class UserService {
                 return user;
             }
         }
-        return null;
+        return null;*/
+       return  userDao.checkUser(username, password);
     }
 
     public static boolean isValidUsername(String username) {

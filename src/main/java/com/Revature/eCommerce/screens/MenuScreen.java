@@ -41,6 +41,7 @@ public class MenuScreen implements IScreen {
                     case "2":
                         break exit;
                     case "3":
+                        router.navigate("/cart", scan);
                         break exit;
                     case "4":
                         break exit;

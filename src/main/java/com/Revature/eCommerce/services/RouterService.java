@@ -2,15 +2,13 @@ package com.Revature.eCommerce.services;
 
 import java.util.Scanner;
 
+import com.Revature.eCommerce.dao.CartDAO;
 import com.Revature.eCommerce.dao.RoleDAO;
 import com.Revature.eCommerce.dao.UserDAO;
+import com.Revature.eCommerce.screens.*;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.dao.ProductDAO;
-import com.Revature.eCommerce.screens.HomeScreen;
-import com.Revature.eCommerce.screens.LoginScreen;
-import com.Revature.eCommerce.screens.MenuScreen;
-import com.Revature.eCommerce.screens.RegisterScreen;
-import com.Revature.eCommerce.screens.BrowseScreen;
+
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class RouterService {
@@ -44,6 +42,7 @@ public class RouterService {
             new BrowseScreen(this, session, productDao).start(scan);
                 break;
             case "/cart":
+                new CartScreen(getCartService(),this,session).start(scan);
                 break;
             case "/payment":
                 break;
@@ -64,5 +63,9 @@ public class RouterService {
 
     private RoleService getRoleService(){
         return new RoleService(new RoleDAO());
+    }
+    private CartService getCartService()
+    {
+        return new CartService(new CartDAO(), new ProductDAO());
     }
 }

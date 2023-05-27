@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
 import com.Revature.eCommerce.models.Product;
+import com.Revature.eCommerce.models.User;
 import com.Revature.eCommerce.utils.ConnectionFaction;
 
 
@@ -29,9 +30,34 @@ public class ProductDAO implements CrudDAO<Product> {
     }
 
     @Override
-    public Product findById(String id) {
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    public Product findById(String id)
+    {
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "SELECT * FROM product WHERE product_id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, id);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return new Product(rs.getString("product_id"), rs.getString("product_name"),
+                                rs.getString("category_id"),rs.getInt("pricing"), rs.getString("description"));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
+
+        return null;
     }
+
 
     @Override
     public List<Product> findAll() {

@@ -17,11 +17,11 @@ public class Session {
 
 
     public void setSession(User user) {
-        this.id = user.getId();
+        this.id = user.getUserId();
         this.username = user.getUsername();
 
     }
-
+    public String getId() {return this.id;}
     public String getUsername()
     {
         return this.username;
