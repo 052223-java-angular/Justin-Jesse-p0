@@ -79,3 +79,4 @@ review VARCHAR,
 FOREIGN KEY (user_ID) REFERENCES USERS(user_ID),
 FOREIGN KEY (product_ID) REFERENCES PRODUCT(product_ID)
 );
+
