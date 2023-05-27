@@ -1,18 +1,23 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 import com.Revature.eCommerce.utils.Session;
+import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.services.RouterService;
+import java.util.List;
+import com.Revature.eCommerce.dao.ProductDAO;
 //@AllArgsConstructor
 //@NoArgsConstructor
-public class MenuScreen implements IScreen {
+public class SearchScreen implements IScreen {
     private Session session;
+    private Product product;
     private final RouterService router;
-
-    public MenuScreen(RouterService router, Session session)
+    private final ProductDAO productDAO;
+    
+    public SearchScreen(RouterService router, Session session, ProductDAO productDAO)
     {
-        this.router = router;
+        this.router = router; 
         this.session = session;
-
+        this.productDAO = productDAO;
     }
 
     @Override
@@ -22,30 +27,24 @@ public class MenuScreen implements IScreen {
         exit: {
             while (true) {
                 clearScreen();
-                System.out.println("Welcome to the menu screen " + session.getUsername() + "!");
+                System.out.println("------------------Product Search--------------------" );
                 System.out.println("\nPlease select your option:\n");
-                System.out.println("Press [1] to Browse Products.");
-                System.out.println("Press [2] to Search Products.");
-                System.out.println("Press [3] to View Cart.");
-                System.out.println("Press [4] to Checkout");
-                System.out.println("Press [5] to View History");
-                System.out.println("Press [X] to exit the application.");
+                System.out.println("Press [1] to Search By Products Name");
+                System.out.println("Press [2] to Search By Category");
+                System.out.println("Press [3] to Search By Price");
+                System.out.println("Press [X] to return to menu");
 
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();
 
                 switch (input.toLowerCase()) {
                     case "1":
-                    router.navigate("/browse", scan);
                         break exit;
                     case "2":
                         break exit;
                     case "3":
                         break exit;
-                    case "4":
-                        break exit;
-                    case "5":
-                        break exit;
+
                     case "x":
                     clearScreen();
                     router.navigate("/menu", scan);
@@ -66,4 +65,10 @@ public class MenuScreen implements IScreen {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+    public void DisplaySearchedProductName(Scanner scan) {
+    
+
+        
+    }
 }
+

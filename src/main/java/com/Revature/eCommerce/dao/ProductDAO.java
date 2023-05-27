@@ -97,8 +97,9 @@ public class ProductDAO implements CrudDAO<Product> {
     }
     
 // Retrieves Product By Name, Category, or Pricing. 
-    public Optional<Product> findProduct(String productName, String categoryId, int pricing) {
+    public List<Product> findProduct(String productName, String categoryId, int pricing) {
         try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            List<Product> productList = new ArrayList<>();
             String sql = "SELECT * FROM product WHERE productName ILIKE ? AND categoryID ILIKE ? AND pricing ILIKE ? ";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -113,7 +114,7 @@ public class ProductDAO implements CrudDAO<Product> {
                         product.setProductName(rs.getString("product_name"));
                         product.setCategoryId(rs.getString("category_id"));
                         product.setPricing(rs.getInt("pricing"));
-                        return Optional.of(product);
+                        return productList;
                     }
                 }
             }
@@ -126,7 +127,7 @@ public class ProductDAO implements CrudDAO<Product> {
             throw new RuntimeException("Unable to load jdbc");
         }
 
-        return Optional.empty();
+        return null;
     }
 
     @Override

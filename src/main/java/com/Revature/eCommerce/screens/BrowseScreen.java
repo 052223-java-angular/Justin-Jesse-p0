@@ -27,15 +27,10 @@ public class BrowseScreen implements IScreen {
         exit: {
             while (true) {
                 clearScreen();
-                //System.out.println("Username: " + session.getUsername());
+              
                 displayProducts();
 
-/*                 System.out.println("\nPress Enter to go to next page.");
-                System.out.println("Press [B] to go back.");
-                System.out.println("Press [A] to go add product to cart.");
-                System.out.println("Press [X] to back to Menu Screen.");
 
-                System.out.print("\nEnter: "); */
                 input = scan.nextLine();
 
                 switch (input.toLowerCase()) {
