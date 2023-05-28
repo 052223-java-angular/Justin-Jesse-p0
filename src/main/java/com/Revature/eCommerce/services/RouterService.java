@@ -95,7 +95,8 @@ public class RouterService {
     {
         return new CartService(new CartDAO());
     }
-    private ProductService getProductService(){return new ProductService(new ProductDAO());
+    private ProductService getProductService(){
+        return new ProductService(new ProductDAO());
     };
 
     private CategoryService getCategoryService()
