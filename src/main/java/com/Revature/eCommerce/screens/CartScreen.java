@@ -48,7 +48,7 @@ public class CartScreen implements IScreen
                 displayCart();
                 System.out.println();
                 System.out.println("Press[1] to checkout.");
-                System.out.println("Press[2] to add an items.");
+                System.out.println("Press[2] to change quantity.");
                 System.out.println("Press[3] to delete an item.");
                 System.out.println("Press[X] Menu");
 
@@ -61,13 +61,11 @@ public class CartScreen implements IScreen
                         break exit;
                     case "2":
                         clearScreen();
-                        addItem();
-                        scan.nextLine();
+                        changeQuantity(scan);
                         break;
                     case "3":
-                        //clearScreen();
-                        //implement a delete item
-                        //scan.nextLine();
+                        clearScreen();
+                        deleteItem(scan);
                         break;
                     case "x":
                         clearScreen();
@@ -84,7 +82,8 @@ public class CartScreen implements IScreen
         }
     }
 
-    public void displayCart()
+
+        public void displayCart()
     {
        if (cart.isEmpty())
         {
@@ -103,43 +102,100 @@ public class CartScreen implements IScreen
                 System.out.println("Name: " + product.getProductName());
 
                 System.out.println("Quantity: " + item.getQuantity());
-                System.out.println("Price: " + item.getPrice());
+                System.out.println("Price Per Item: " + product.getPricing());
+                System.out.println("Total: " + item.getPrice());//cartService.calculatePrice(product ,item.getQuantity(), cart.get().getId()));
                 System.out.println("---------------------------");
 
             }
-            System.out.println("Amount spent: " + cart.get().getAmountSpent());
+            System.out.println("Amount spent: " + cartService.getAmountSpent(items));
             System.out.println("---------------------------");
         }
 
     }
-    public void addItem()
-    {
+        public void changeQuantity(Scanner scan) {
+            clearScreen();
+            String name;
+            int quantity;
+            Product product;
+            boolean control = true;
+
+            displayCart();
+
+            while (control)
+            {
+                System.out.print("\nEnter the item to select: ");
+                name = scan.nextLine();
+                name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+                product = productService.findByName(name);
+                if (product == null) {
+                    System.out.println("Invalid product. Please enter a valid product name.");
+                    continue;
+                }
+
+                System.out.print("Change the amount: ");
+                quantity = scan.nextInt();
+                scan.nextLine();
+
+                if (quantity == 0) {
+                    System.out.println("Invalid quantity. Quantity cannot be 0.");
+                    continue;
+                }
+
+                for (CartItem item : items) {
+                    if (item.getProductId().equalsIgnoreCase(product.getProductId())) {
+                        cartService.changeItemQuantity(product, quantity, cart.get().getId());
+                        int newPrice =  cartService.calculatePrice(product ,quantity);
+                        cartService.changeItemPrice(product, newPrice ,cart.get().getId());
+                        break;
+                    }
+                }
+
+                System.out.print("\nDo you want to change the quantity of another item? (y/n): ");
+                String choice = scan.nextLine().toLowerCase();
+                control = choice.equals("y");
+            }
+
+            start(scan);
+        }
+
+        public void deleteItem(Scanner scan)
+        {
         clearScreen();
-        Scanner scan = new Scanner(System.in);
         String name;
         int quantity;
         Product product;
-        CartItem cartItem;
+        boolean control = true;
 
         displayCart();
-        System.out.print("\nEnter the item: ");
-        name = scan.nextLine();
-        System.out.print("Enter the amount to add: ");
-        quantity = scan.nextInt();
-        product = productService.findByName(name);
-       for(CartItem item:items)
+
+            while (control)
         {
-            if (item.getProductId().equalsIgnoreCase(product.getProductId()))
-            {
-                cartService.changeItemQuantity(product.getProductId(),quantity, cart.get().getId());
-                start(scan);
+            System.out.print("\nEnter the item to delete: ");
+            name = scan.nextLine();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+            product = productService.findByName(name);
+            if (product == null) {
+                System.out.println("Invalid product. Please enter a valid product name.");
+                continue;
             }
+
+
+            for (CartItem item : items) {
+                if (item.getProductId().equalsIgnoreCase(product.getProductId())) {
+                    cartService.deleteItem(item);
+                    break;
+                }
+            }
+
+            System.out.print("\nDo you want to delete another item? (y/n): ");
+            String choice = scan.nextLine().toLowerCase();
+            control = choice.equals("y");
         }
 
+        start(scan);
     }
 
-
-    private void clearScreen() {
+        private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }

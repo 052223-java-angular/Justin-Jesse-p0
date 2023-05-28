@@ -14,7 +14,6 @@ public class ProductService {
 
     public Product findByName(String name)
     {
-        //Should add a check to avoid misspelling and wrong data entered
        return  productDAO.findByName(name);
 
     }
