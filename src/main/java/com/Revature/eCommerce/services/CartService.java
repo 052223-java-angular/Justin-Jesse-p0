@@ -4,18 +4,14 @@ import com.Revature.eCommerce.dao.CartDAO;
 import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.CartItem;
-import com.Revature.eCommerce.models.Product;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class CartService {
     private final CartDAO cartDAO;
-    private final ProductDAO productDAO;
-    public CartService(CartDAO cartDAO, ProductDAO productDAO)
+    public CartService(CartDAO cartDAO)
     {
         this.cartDAO = cartDAO;
-        this.productDAO = productDAO;
     }
 
     public ArrayList<CartItem> getCartItems(String cartID)
@@ -29,9 +25,10 @@ public class CartService {
        return cartDAO.getCart(userId);
    }
 
-   public Product getProduct(String productID)
+   public void changeItemQuantity(String productId, int quantity, String cartId)
    {
-     return productDAO.findById(productID);
+       cartDAO.changeItemQuantity(productId, quantity, cartId);
    }
+
 
 }

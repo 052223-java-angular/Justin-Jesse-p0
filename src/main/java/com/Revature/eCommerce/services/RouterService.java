@@ -42,7 +42,7 @@ public class RouterService {
             new BrowseScreen(this, session, productDao).start(scan);
                 break;
             case "/cart":
-                new CartScreen(getCartService(),this,session).start(scan);
+                new CartScreen(getCartService(),getProductService(),this,session).start(scan);
                 break;
             case "/payment":
                 break;
@@ -66,6 +66,8 @@ public class RouterService {
     }
     private CartService getCartService()
     {
-        return new CartService(new CartDAO(), new ProductDAO());
+        return new CartService(new CartDAO());
     }
+    private ProductService getProductService(){return new ProductService(new ProductDAO());
+    };
 }

@@ -4,6 +4,7 @@ import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.CartItem;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.services.CartService;
+import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.utils.Session;
 import lombok.AllArgsConstructor;
@@ -19,14 +20,19 @@ public class CartScreen implements IScreen
         private static final Logger logger = LogManager.getLogger(CartScreen.class);
         private final Session session;
         private final CartService cartService;
+        private final ProductService productService;
         private final RouterService router;
         ArrayList<CartItem> items;
-    public CartScreen(CartService cartService, RouterService routerService, Session session)
+        Optional<Cart> cart;
+    public CartScreen(CartService cartService,ProductService productService, RouterService routerService, Session session)
     {
         this.cartService = cartService;
+        this.productService = productService;
         this.router = routerService;
         this.session = session;
         this.items = new ArrayList<>();
+        cart= cartService.getCart(session.getId());
+
     }
 
     @Override
@@ -55,7 +61,8 @@ public class CartScreen implements IScreen
                         break exit;
                     case "2":
                         clearScreen();
-                        //implement an add item
+                        addItem();
+                        scan.nextLine();
                         break;
                     case "3":
                         //clearScreen();
@@ -79,10 +86,6 @@ public class CartScreen implements IScreen
 
     public void displayCart()
     {
-        //System.out.println(session.getId());
-        Optional<Cart> cart = cartService.getCart(session.getId());
-
-
        if (cart.isEmpty())
         {
 
@@ -95,7 +98,7 @@ public class CartScreen implements IScreen
 
             for(CartItem item:items)
             {
-                Product product = cartService.getProduct(item.getProductId());
+                Product product = productService.getProduct(item.getProductId());
 
                 System.out.println("Name: " + product.getProductName());
 
@@ -109,6 +112,32 @@ public class CartScreen implements IScreen
         }
 
     }
+    public void addItem()
+    {
+        clearScreen();
+        Scanner scan = new Scanner(System.in);
+        String name;
+        int quantity;
+        Product product;
+        CartItem cartItem;
+
+        displayCart();
+        System.out.print("\nEnter the item: ");
+        name = scan.nextLine();
+        System.out.print("Enter the amount to add: ");
+        quantity = scan.nextInt();
+        product = productService.findByName(name);
+       for(CartItem item:items)
+        {
+            if (item.getProductId().equalsIgnoreCase(product.getProductId()))
+            {
+                cartService.changeItemQuantity(product.getProductId(),quantity, cart.get().getId());
+                start(scan);
+            }
+        }
+
+    }
+
 
     private void clearScreen() {
         System.out.print("\033[H\033[2J");

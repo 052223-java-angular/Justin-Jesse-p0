@@ -30,7 +30,7 @@ public class UserService {
     //Checks to see if user is in datebase
     public User checkUser(String username, String password)
     {
-        /* Currently out for testing cart
+        /*  This is the actual method Currently out for testing cart
        Optional<User> optionalUser = userDao.findByUsername(username);
         if (optionalUser.isPresent())
         {
