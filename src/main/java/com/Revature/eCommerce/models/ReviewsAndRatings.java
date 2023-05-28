@@ -12,8 +12,11 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class paymentInfo {
-    private String id;
+public class ReviewsAndRatings 
+{
+    private String id;    
     private String userId;
-    private int ccNumber;
+    private String productId;
+    private int rating;
+    private String review;
 }

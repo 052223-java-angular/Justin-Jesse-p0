@@ -12,9 +12,9 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class history 
+public class History 
 {
-    private String productId;    
+    private String id;
     private String userId;
-    private String paymentId;
+    private float totalCost;
 }
