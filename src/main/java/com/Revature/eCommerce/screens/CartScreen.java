@@ -115,7 +115,7 @@ public class CartScreen implements IScreen
         public void changeQuantity(Scanner scan) {
             clearScreen();
             String name;
-            int quantity;
+            String quantity;
             Product product;
             boolean control = true;
 
@@ -123,28 +123,32 @@ public class CartScreen implements IScreen
 
             while (control)
             {
-                System.out.print("\nEnter the item to select: ");
+                System.out.print("\nEnter the item to select or [x] to go back): ");
                 name = scan.nextLine();
                 name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
                 product = productService.findByName(name);
+                if (name.equalsIgnoreCase("x")) {
+                    break;
+                }
                 if (product == null) {
                     System.out.println("Invalid product. Please enter a valid product name.");
                     continue;
                 }
 
-                System.out.print("Change the amount: ");
-                quantity = scan.nextInt();
-                scan.nextLine();
-
-                if (quantity == 0) {
+                System.out.print("Change the amount or [x] to go back): ");
+                quantity = scan.nextLine();
+                if (quantity.equalsIgnoreCase("x")) {
+                    break;
+                }
+                if (Integer.parseInt(quantity) == 0) {
                     System.out.println("Invalid quantity. Quantity cannot be 0.");
                     continue;
                 }
 
                 for (CartItem item : items) {
                     if (item.getProductId().equalsIgnoreCase(product.getProductId())) {
-                        cartService.changeItemQuantity(product, quantity, cart.get().getId());
-                        int newPrice =  cartService.calculatePrice(product ,quantity);
+                        cartService.changeItemQuantity(product, Integer.parseInt(quantity), cart.get().getId());
+                        int newPrice =  cartService.calculatePrice(product ,Integer.parseInt(quantity));
                         cartService.changeItemPrice(product, newPrice ,cart.get().getId());
                         break;
                     }
@@ -170,8 +174,11 @@ public class CartScreen implements IScreen
 
             while (control)
         {
-            System.out.print("\nEnter the item to delete: ");
+            System.out.print("\nEnter the item to delete or [x] to go back: ");
             name = scan.nextLine();
+            if (name.equalsIgnoreCase("x")) {
+                break;
+            }
             name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
             product = productService.findByName(name);
             if (product == null) {
