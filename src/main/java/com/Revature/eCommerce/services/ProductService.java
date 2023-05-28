@@ -1,4 +1,5 @@
 package com.Revature.eCommerce.services;
+
 import java.util.List;
 //import java.util.Optional;
 import com.Revature.eCommerce.dao.ProductDAO;
@@ -40,7 +41,16 @@ import com.Revature.eCommerce.models.Product;
         return products;
 
     }
-    
+     public Product findByName(String name)
+    {
+       return  productDAO.findByName(name);
+
+    }
+    public Product getProduct(String productID)
+    {
+        return productDAO.findById(productID);
+    }
 
 
 }
+

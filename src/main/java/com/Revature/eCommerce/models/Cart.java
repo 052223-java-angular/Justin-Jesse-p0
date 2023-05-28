@@ -16,4 +16,13 @@ public class Cart
     private String id;
     private String userId;
     private int amountSpent;
+    public int getAmountSpent() {
+        return amountSpent;
+    }
+
+    public void setAmountSpent(int amountSpent) {
+        this.amountSpent = amountSpent;
+    }
+
+
 }
