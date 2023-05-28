@@ -1,4 +1,5 @@
 package com.Revature.eCommerce.models;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,11 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class cart 
+public class ReviewsAndRatings 
 {
-    private String id;
-    private String productId;
+    private String id;    
     private String userId;
-    private int count;
+    private String productId;
+    private int rating;
+    private String review;
 }
