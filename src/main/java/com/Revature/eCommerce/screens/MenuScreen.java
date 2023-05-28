@@ -39,6 +39,7 @@ public class MenuScreen implements IScreen {
                     router.navigate("/browse", scan);
                         break exit;
                     case "2":
+                    router.navigate("/search", scan);
                         break exit;
                     case "3":
                         break exit;
@@ -48,8 +49,8 @@ public class MenuScreen implements IScreen {
                         break exit;
                     case "x":
                     clearScreen();
-                    router.navigate("/menu", scan);
-                        break exit;
+                    router.navigate("/home", scan);
+                        break exit; 
                     default:
                         clearScreen();
                         System.out.println("Invalid option!");

@@ -43,7 +43,7 @@ public class User
         return this.password;
     }
 
-    public void setId(String id)
+    public void setId(String user_id)
     {
         this.user_id = user_id;
     }

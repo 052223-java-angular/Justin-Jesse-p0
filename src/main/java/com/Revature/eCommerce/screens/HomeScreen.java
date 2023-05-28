@@ -37,6 +37,7 @@ public class HomeScreen implements IScreen{
                     case "x":
                         System.out.println("\nGoodbye!");
                         break exit;
+
                     default:
                         clearScreen();
                         System.out.println("Invalid option!");
@@ -46,6 +47,7 @@ public class HomeScreen implements IScreen{
                 }
             }
         }
+        System.exit(0);
     }
 
 

@@ -23,7 +23,7 @@ public class RegisterScreen implements IScreen
 
     @Override
     public void start(Scanner scan) {
-        String input = "";
+        //String input = "";
         String username = "";
         String password = "";
 
@@ -85,7 +85,7 @@ public class RegisterScreen implements IScreen
                 return "x";
             }
 
-            if (!userService.isValidUsername(username)) {
+            if (!UserService.isValidUsername(username)) {
                 clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");

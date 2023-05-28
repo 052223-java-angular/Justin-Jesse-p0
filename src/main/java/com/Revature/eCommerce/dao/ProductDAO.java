@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 import java.util.ArrayList;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.utils.ConnectionFaction;
@@ -38,34 +38,6 @@ public class ProductDAO implements CrudDAO<Product> {
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    /* public List<Product> getAllProducts(){
-        List<Product> productList = new ArrayList<>();
-        try(Connection conn = ConnectionFaction.getInstance().getConnection()){
-            String sql = "Select * FROM product";
-            
-            PreparedStatement statement = conn.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCT");
-            
-            try (ResultSet rs = statement.executeQuery()){
-                Product product = new Product();
-                product.setProductId(resultSet.getString("product_id"));
-                product.setProductName(resultSet.getString("product_name"));
-                product.setCategoryId(resultSet.getString("category_id"));
-                product.setPricing(resultSet.getInt("pricing"));
-                product.setDescription(resultSet.getString("description"));
-            }
-            resultSet.close();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
-        }
-        return productList;
-
-    } */
 
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
@@ -97,38 +69,92 @@ public class ProductDAO implements CrudDAO<Product> {
     }
     
 // Retrieves Product By Name, Category, or Pricing. 
-    public List<Product> findProduct(String productName, String categoryId, int pricing) {
-        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-            List<Product> productList = new ArrayList<>();
-            String sql = "SELECT * FROM product WHERE productName ILIKE ? AND categoryID ILIKE ? AND pricing ILIKE ? ";
+ 
+public List<Product> findProductByName(String productName) {
+    List<Product> products = new ArrayList<>();
+    try {
+        Connection conn = ConnectionFaction.getInstance().getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM PRODUCT WHERE product_Name ILIKE ?");
+        preparedStatement.setString(1, "%" + productName + "%");
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, productName);
-                ps.setString(2, categoryId);
-                ps.setInt(3, pricing);
+        while (resultSet.next()) {
+            Product product = new Product();
+            product.setProductId(resultSet.getString("product_ID"));
+            product.setProductName(resultSet.getString("product_Name"));
+            product.setCategoryId(resultSet.getString("category_ID"));
+            product.setPricing(resultSet.getInt("pricing"));
+            product.setDescription(resultSet.getString("description"));
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        Product product = new Product();
-                        product.setProductId(rs.getString("product_id"));
-                        product.setProductName(rs.getString("product_name"));
-                        product.setCategoryId(rs.getString("category_id"));
-                        product.setPricing(rs.getInt("pricing"));
-                        return productList;
-                    }
-                }
-            }
-
-        } catch (SQLException e) {
+            products.add(product);
+        }
+    } 
+         catch (SQLException e) {
             throw new RuntimeException("Unable to connect to db");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Unable to load jdbc");
         }
+    return products;
+}
 
-        return null;
+public List<Product> findProductByCategory(String category_ID) {
+    List<Product> products = new ArrayList<>();
+    try {
+        Connection conn = ConnectionFaction.getInstance().getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM PRODUCT WHERE category_ID  = ?");
+        preparedStatement.setString(1, category_ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            Product product = new Product();
+            product.setProductId(resultSet.getString("product_ID"));
+            product.setProductName(resultSet.getString("product_Name"));
+            product.setCategoryId(resultSet.getString("category_ID"));
+            product.setPricing(resultSet.getInt("pricing"));
+            product.setDescription(resultSet.getString("description"));
+
+            products.add(product);
+        }
+    } 
+         catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    return products;
+}
+public List<Product> findProductByPricing(int minPrice, int maxPrice) {
+    List<Product> products = new ArrayList<>();
+    try {
+        Connection conn = ConnectionFaction.getInstance().getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM PRODUCT WHERE pricing >= ? AND pricing <= ?");
+        preparedStatement.setInt(1, minPrice);
+        preparedStatement.setInt(2, maxPrice);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            Product product = new Product();
+            product.setProductId(resultSet.getString("product_ID"));
+            product.setProductName(resultSet.getString("product_Name"));
+            product.setCategoryId(resultSet.getString("category_ID"));
+            product.setPricing(resultSet.getInt("pricing"));
+            product.setDescription(resultSet.getString("description"));
+
+            products.add(product);
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException("Unable to connect to the database");
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties");
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Unable to load JDBC driver");
     }
+    return products;
+}
 
     @Override
     public void save(Product obj) {

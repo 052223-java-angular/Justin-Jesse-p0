@@ -14,10 +14,7 @@ import lombok.ToString;
     
 public class Category
 {
-    private String id;
-    private String categoryName;
-    public void setName(String string) {
-        this.categoryName = categoryName;
-    }
+    private String category_ID;
+    private String category_Name;
 
 }

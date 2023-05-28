@@ -3,21 +3,25 @@ import java.util.Scanner;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.services.RouterService;
+import com.Revature.eCommerce.services.ProductService;
+
 import java.util.List;
-import com.Revature.eCommerce.dao.ProductDAO;
+//import com.Revature.eCommerce.dao.ProductDAO;
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class BrowseScreen implements IScreen {
     private Session session;
-    private Product product;
+    //private Product product;
     private final RouterService router;
-    private final ProductDAO productDAO;
+    private final ProductService productService;
+
     
-    public BrowseScreen(RouterService router, Session session, ProductDAO productDAO)
+    public BrowseScreen(RouterService router, Session session, Product product, ProductService productService)
     {
         this.router = router; 
         this.session = session;
-        this.productDAO = productDAO;
+        //this.product = product;
+        this.productService = productService;
     }
 
     @Override
@@ -47,7 +51,6 @@ public class BrowseScreen implements IScreen {
                         break exit;
                     case "x":
                     clearScreen();
-                    router.navigate("/menu", scan);
                         break exit;
                     default:
                         clearScreen();
@@ -66,22 +69,22 @@ public class BrowseScreen implements IScreen {
         System.out.flush();
     }
     public void displayProducts() {
-        List<Product> productList = productDAO.getAllProducts();
+        List<Product> productList = productService.getAllProducts();
         int listSize = productList.size();
         boolean exit = false; 
         int index = 0;
         Scanner scan = new Scanner(System.in);
-        System.out.println("Product List:");
-        System.out.println("-----------------------------");
+
         while(!exit){
 
         Product product = productList.get(index);
+            System.out.println("Product List:");
+            System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
-
             System.out.println("Product ID: " + product.getProductId());
             System.out.println("Name: " + product.getProductName());
             System.out.println("Category ID: " + product.getCategoryId());
-            System.out.println("Pricing: " + product.getPricing());
+            System.out.println("Pricing: $" + product.getPricing());
             System.out.println("Description: " + product.getDescription());
             System.out.println("-----------------------------");
 
@@ -97,6 +100,7 @@ public class BrowseScreen implements IScreen {
                 clearScreen();
                 exit = true;
                 router.navigate("/menu", scan);
+                scanner.close();
 
             }
             else{

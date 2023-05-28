@@ -1,10 +1,10 @@
 package com.Revature.eCommerce.models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+//import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import java.util.UUID;
+//import java.util.UUID;
 @AllArgsConstructor
 //@NoArgsConstructor
 @Getter
@@ -23,9 +23,9 @@ public class Product
     }
 
     public Product(String id , String productName, int pricing, String description){
-        this.product_id = product_id;
-        this.product_name = product_name;
-        this.category_id = category_id;
+       // this.product_id = product_id;
+       // this.product_name = product_name;
+        //this.category_id = category_id;
         this.pricing = pricing;
         this.description = description;
 
