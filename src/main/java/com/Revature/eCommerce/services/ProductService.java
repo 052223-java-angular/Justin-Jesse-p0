@@ -10,10 +10,9 @@ import com.Revature.eCommerce.models.Product;
 
     public class ProductService {
         private final ProductDAO productDao;
-        //private final CategoryService categoryService; 
 
 
-    public ProductService(ProductDAO productDao, CategoryService categoryService){
+    public ProductService(ProductDAO productDao){
         this.productDao = productDao;
         //this.categoryService = categoryService;
     }
@@ -43,12 +42,12 @@ import com.Revature.eCommerce.models.Product;
     }
      public Product findByName(String name)
     {
-       return  productDAO.findByName(name);
+       return productDao.findByName(name);
 
     }
     public Product getProduct(String productID)
     {
-        return productDAO.findById(productID);
+        return productDao.findById(productID);
     }
 
 
