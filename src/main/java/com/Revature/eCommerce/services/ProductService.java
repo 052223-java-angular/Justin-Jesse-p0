@@ -1,18 +1,47 @@
 package com.Revature.eCommerce.services;
 
+import java.util.List;
+//import java.util.Optional;
 import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.models.Product;
 
+//import lombok.AllArgsConstructor;
 
-public class ProductService {
 
-    private final ProductDAO productDAO;
+    public class ProductService {
+        private final ProductDAO productDao;
+        //private final CategoryService categoryService; 
 
-    public ProductService(ProductDAO productDAO) {
-        this.productDAO = productDAO;
+
+    public ProductService(ProductDAO productDao, CategoryService categoryService){
+        this.productDao = productDao;
+        //this.categoryService = categoryService;
     }
 
-    public Product findByName(String name)
+	public List<Product> getAllProducts(){
+        List<Product> products = productDao.getAllProducts();
+
+        return products;
+
+    }
+    
+    public List<Product> findProductByName(String input){
+        List<Product> products = productDao.findProductByName(input);
+        return products;
+
+    }
+    public List<Product> findProductByCategory(String input){
+        List<Product> products = productDao.findProductByCategory(input);
+        return products;
+
+    }
+
+    public List<Product> findProductByPricing(int min, int max){
+        List<Product> products = productDao.findProductByPricing(min, max);
+        return products;
+
+    }
+     public Product findByName(String name)
     {
        return  productDAO.findByName(name);
 
@@ -21,4 +50,7 @@ public class ProductService {
     {
         return productDAO.findById(productID);
     }
+
+
 }
+

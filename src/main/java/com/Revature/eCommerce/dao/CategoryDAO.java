@@ -2,14 +2,12 @@ package com.Revature.eCommerce.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
-
+import java.util.ArrayList;
 import com.Revature.eCommerce.models.Category;
-import com.Revature.eCommerce.models.User;
 import com.Revature.eCommerce.utils.ConnectionFaction;
 
 public class CategoryDAO implements CrudDAO<Category> {
@@ -44,31 +42,31 @@ public class CategoryDAO implements CrudDAO<Category> {
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public Optional<Category> findByName(String categoryName) {
-        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-            String sql = "SELECT * FROM Category WHERE categoryName = ?";
+    public List<Category> getAllCategories() {
+        List<Category> categoryList = new ArrayList<>();
+        try {
+            Connection conn = ConnectionFaction.getInstance().getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Category");
+            while (resultSet.next()) {
+                Category category = new Category();
+                category.setCategory_ID(resultSet.getString("category_ID"));
+                category.setCategory_Name(resultSet.getString("category_Name"));
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, categoryName);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        Category category = new Category();
-                        category.setId(rs.getString("id"));
-                        category.setName(rs.getString("categoryName"));
-                        return Optional.of(category);
-                    }
-                }
+                categoryList.add(category);
             }
+            resultSet.close();
+            statement.close();
+        } 
+     catch (SQLException e) {
+        throw new RuntimeException("Unable to connect to db");
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties");
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Unable to load jdbc");
+    }
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
-        }
-
-        return Optional.empty();
+        return categoryList;
     }
 }
+

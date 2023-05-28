@@ -6,7 +6,7 @@ import com.Revature.eCommerce.models.Role;
 import org.mindrot.jbcrypt.BCrypt;
 import com.Revature.eCommerce.dao.UserDAO;
 import com.Revature.eCommerce.models.User;
-import com.Revature.eCommerce.services.RoleService;
+//import com.Revature.eCommerce.services.RoleService;
 
 public class UserService {
 
