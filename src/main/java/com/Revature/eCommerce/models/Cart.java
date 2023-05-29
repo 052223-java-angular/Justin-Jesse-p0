@@ -13,6 +13,8 @@ import lombok.ToString;
 
 public class Cart 
 {
+
+
     private String id;
     private String userId;
     private int amountSpent;
@@ -22,6 +24,10 @@ public class Cart
 
     public void setAmountSpent(int amountSpent) {
         this.amountSpent = amountSpent;
+    }
+
+    public String getId() {
+        return id;
     }
 
 

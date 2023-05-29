@@ -17,16 +17,9 @@ import com.Revature.eCommerce.screens.RegisterScreen;
 import com.Revature.eCommerce.screens.BrowseScreen;
 import com.Revature.eCommerce.screens.SearchScreen;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class RouterService {
     private Session session;
     private Product product;
-
-    public RouterService()
-    {
-        
-    }
     public RouterService(Session session, Product product)
     {
         this.session = session;

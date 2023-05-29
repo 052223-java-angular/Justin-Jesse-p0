@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CartDAO implements CrudDAO
 {
@@ -23,7 +24,26 @@ public class CartDAO implements CrudDAO
     }
 
     @Override
-    public void update(String id) {
+    public void update(String userId)
+    {
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "INSERT INTO cart (cart_id,user_id,amount_spent) VALUES (?,?,?)";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, UUID.randomUUID().toString());
+                ps.setString(2,userId);
+                ps.setInt(3,0);
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
 
     }
 
@@ -31,6 +51,24 @@ public class CartDAO implements CrudDAO
     public void delete(String id)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "DELETE FROM cart_item where cart_item_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, id);
+            ps.executeUpdate();
+        }
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Unable to connect to db");
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties");
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Unable to load jdbc");
+    }
+
+    }
+    public void deleteCart(String id)
+    {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+        String sql = "DELETE FROM cart_item WHERE cart_ID = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, id);
