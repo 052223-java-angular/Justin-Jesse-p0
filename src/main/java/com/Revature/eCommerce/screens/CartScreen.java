@@ -3,11 +3,9 @@ package com.Revature.eCommerce.screens;
 import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.CartItem;
 import com.Revature.eCommerce.models.Product;
-import com.Revature.eCommerce.services.CartService;
-import com.Revature.eCommerce.services.PaymentService;
-import com.Revature.eCommerce.services.ProductService;
-import com.Revature.eCommerce.services.RouterService;
+import com.Revature.eCommerce.services.*;
 import com.Revature.eCommerce.utils.Session;
+import com.Revature.eCommerce.utils.custom_exceptions.NoItemsInCartException;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,18 +20,20 @@ public class CartScreen implements IScreen
         private final Session session;
         private final CartService cartService;
         private final ProductService productService;
+        private final HistoryService historyService;
         private final RouterService router;
         ArrayList<CartItem> items;
         Optional<Cart> cart;
-    public CartScreen(CartService cartService,ProductService productService, RouterService routerService, Session session)
+        private int amountSpent;
+    public CartScreen(CartService cartService,ProductService productService,HistoryService historyService, RouterService router, Session session)
     {
         this.cartService = cartService;
         this.productService = productService;
-        this.router = routerService;
+        this.historyService = historyService;
+        this.router = router;
         this.session = session;
         this.items = new ArrayList<>();
         cart= cartService.getCart(session.getId());
-
     }
 
     @Override
@@ -85,10 +85,11 @@ public class CartScreen implements IScreen
 
 
         public void displayCart() {
-            if (cart.isEmpty()) {
+            items = cartService.getCartItems(cart.get().getId());
+            if (items.isEmpty()){
                 System.out.println("\nThere is nothing in your cart!");
             } else {
-                items = cartService.getCartItems(cart.get().getId());
+
                 System.out.println("-------- Your Cart --------");
 
                 for (int i = 0; i < items.size(); i++) {
@@ -102,7 +103,8 @@ public class CartScreen implements IScreen
                     System.out.println("---------------------------");
                 }
 
-                System.out.println("Amount spent: " + cartService.getAmountSpent(items));
+                amountSpent = cartService.getAmountSpent(items);
+                System.out.println("Amount spent: " + amountSpent);
                 System.out.println("---------------------------");
             }
         }
@@ -112,10 +114,14 @@ public class CartScreen implements IScreen
             int itemNumber;
             int quantity;
             boolean control = true;
-
-            displayCart();
-
             while (control) {
+                if (items.isEmpty()) {
+                    System.out.println("No items in the cart. Returning to the menu.");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    router.navigate("/menu", scan);
+                }
+                displayCart();
                 System.out.print("\nEnter the item number to select or [x] to go back: ");
                 String input = scan.nextLine();
 
@@ -126,7 +132,6 @@ public class CartScreen implements IScreen
                 try {
                     itemNumber = Integer.parseInt(input);
 
-                    // Validate the item number
                     if (itemNumber < 1 || itemNumber > items.size()) {
                         System.out.println("Invalid item number. Please try again.");
                         continue;
@@ -134,9 +139,8 @@ public class CartScreen implements IScreen
 
                     System.out.print("Enter the new quantity: ");
                     quantity = scan.nextInt();
-                    scan.nextLine();  // Consume the remaining newline character
+                    scan.nextLine();
 
-                    // Validate the quantity
                     if (quantity <= 0) {
                         System.out.println("Invalid quantity. Quantity must be greater than 0.");
                         continue;
@@ -145,7 +149,6 @@ public class CartScreen implements IScreen
                     CartItem item = items.get(itemNumber - 1);
                     Product product = productService.getProduct(item.getProductId());
 
-                    // Update the quantity of the selected item in the cart
                     cartService.changeItemQuantity(product, quantity, cart.get().getId());
                     int newPrice =  cartService.calculatePrice(product,quantity);
                     cartService.changeItemPrice(product, newPrice ,cart.get().getId());
@@ -171,64 +174,67 @@ public class CartScreen implements IScreen
             String cvv;
             boolean control = true;
 
-            while(control)
-            {
+            while (control) {
                 clearScreen();
-                displayCart();
-                System.out.print("\nAre you sure you want to check out? (y/n) ");
-                input = scan.nextLine();
-                if (input.equalsIgnoreCase("y"))
-                {
-                    System.out.print("Enter CC number: ");
-                    cc = scan.nextLine();
-                    if (new PaymentService().isValidCC(cc))
-                    {
-                        System.out.println("Invalid credit card number. Please try again.");
-                        continue;
-                    }
-                    System.out.print("Enter Exp date(mm/yy): ");
-                    exp = scan.nextLine();
-                    if(!new PaymentService().isValidExp(exp))
-                    {
-                        System.out.println("Invalid expiration date. Please try again.");
-                        continue;
-                    }
-                    System.out.print(("Enter CVV: "));
-                    cvv = scan.nextLine();
-                    if (!new PaymentService().isValidCVV(cvv))
-                    {
-                        System.out.println("Invalid CVV. Please try again.");
-                        continue;
-                    }
-                    control =false;
+                if (items.isEmpty()) {
+                    System.out.println("No items in the cart. Returning to the menu.");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    router.navigate("/menu", scan);
                 }
-                else if (input.equalsIgnoreCase("n")) {
-                    control = false;
-                    break;
-                }
-                else
-                {
-                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    System.out.print("\nAre you sure you want to check out? (y/n) ");
+                    input = scan.nextLine();
+                    displayCart();
+                    if (input.equalsIgnoreCase("y")) {
+                        System.out.print("Enter CC number: ");
+                        cc = scan.nextLine();
+                        if (new PaymentService().isValidCC(cc)) {
+                            System.out.println("Invalid credit card number. Please try again.");
+                            continue;
+                        }
+                        System.out.print("Enter Exp date (mm/yy): ");
+                        exp = scan.nextLine();
+                        if (!new PaymentService().isValidExp(exp)) {
+                            System.out.println("Invalid expiration date. Please try again.");
+                            continue;
+                        }
+                        System.out.print("Enter CVV: ");
+                        cvv = scan.nextLine();
+                        if (!new PaymentService().isValidCVV(cvv)) {
+                            System.out.println("Invalid CVV. Please try again.");
+                            continue;
+                        }
+                        control = false;
+                        historyService.createOrder(items, session, amountSpent);
+                        cartService.deleteCart(cart.get().getId());
+                        cartService.newCart(session.getId());
+                        System.out.print("Order submitted!");
+                        System.out.print("\nPress enter to continue...");
+                        scan.nextLine();
+                        router.navigate("/menu", scan);
+                    } else if (input.equalsIgnoreCase("n")) {
+                        start(scan);
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    }
                 }
             }
-            clearScreen();
 
-            cartService.deleteCart(cart.get().getId());
-            cartService.newCart(session.getId());
-            System.out.print("Order submitted!");
-            System.out.print("\nPress enter to continue...");
-            scan.nextLine();
-            router.navigate("/menu",scan);
-        }
 
         public void deleteItem(Scanner scan) {
             clearScreen();
             int selection;
             boolean control = true;
 
-            displayCart();
-
             while (control) {
+                if (items.isEmpty()) {
+                    System.out.println("No items in the cart. Returning to the menu.");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    router.navigate("/menu", scan);
+                }
+                displayCart();
                 System.out.print("\nEnter the number of the item to delete or [x] to go back: ");
                 String input = scan.nextLine();
                 if (input.equalsIgnoreCase("x")) {

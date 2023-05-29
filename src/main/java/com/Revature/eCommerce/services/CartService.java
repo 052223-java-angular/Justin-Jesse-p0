@@ -41,7 +41,8 @@ public class CartService {
     }
 
 
-    public int getAmountSpent(ArrayList<CartItem> items) {
+    public int getAmountSpent(ArrayList<CartItem> items)
+    {
         return items.stream().mapToInt(CartItem::getPrice).sum();
     }
 
