@@ -1,8 +1,5 @@
 
 
-
-<-------DML TO TEST CART---->
-
 INSERT INTO CATEGORY (category_ID, category_Name)
 VALUES
 ('1', 'Electronics'),
@@ -39,4 +36,13 @@ insert into cart_item (cart_item_id, product_id, cart_id, quantity, price) value
 ('CI2', 'P2','C1', 2, 2),
 ('CI3', 'P1','C2', 2, 3000);
 
-INSERT INTO ROLES (role_id, rolename) VALUES ('590716c5-9eea-4653-a3d3-e83d2f508297', 'USER');
+INSERT INTO REVIEWSANDRATINGS (review_ID, user_ID, product_ID, rating, review)
+VALUES
+('R1', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26', 'P1', 1, 'This is a horrible offer. $1500 for a laptop is Outrageous!'),
+('R2', '3bcd6c35-381a-4d03-b765-05e0acefbced', 'P1', 5, 'Amazing performance and sleek design.'),
+('R3', '3bcd6c35-381a-4d03-b765-05e0acefbced', 'P2', 4, 'Really cant beat the price'),
+('R4', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26', 'P3', 2, 'To naturey'),
+('R5', '3bcd6c35-381a-4d03-b765-05e0acefbced', 'P4', 3, 'Decent bananas.'),
+('R6', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26', 'P5', 5, 'Great taste and good for health.'),
+('R7', '3bcd6c35-381a-4d03-b765-05e0acefbced', 'P6', 4, 'Juicy and refreshing watermelons.'),
+('R8', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26', 'P7', 2, 'Prim died...');

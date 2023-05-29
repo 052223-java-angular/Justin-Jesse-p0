@@ -14,9 +14,11 @@ import lombok.ToString;
 
 public class ReviewsAndRatings 
 {
-    private String id;    
-    private String userId;
-    private String productId;
+
+    private String review_id;    
+    private String user_id;
+    private String product_id;
     private int rating;
     private String review;
+
 }

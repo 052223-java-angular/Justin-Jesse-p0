@@ -58,12 +58,13 @@ public class SearchScreen implements IScreen {
                     clearScreen();
                     router.navigate("/menu", scan);
                         break exit;
+
                     default:
                         clearScreen();
-                        System.out.println("Invalid option!");
+                        System.out.println("Invalid Option!");
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
-                        break;
+                        break exit;
                 }
             }
         }
@@ -269,19 +270,20 @@ public class SearchScreen implements IScreen {
     public void DisplaySearchedProductPricing(Scanner scan) {
         clearScreen();
         System.out.println("Enter Minimum Value ");
-
-            int min = scan.nextInt();
-            clearScreen();
-
+        int min = scan.nextInt();
+        scan.nextLine();
+        clearScreen();
+    
         System.out.println("Enter Maximum Value ");
-      
-            int max = scan.nextInt();
-            clearScreen();
-        
+        int max = scan.nextInt();
+        scan.nextLine();
+        clearScreen();
+
         List<Product> productList = productService.findProductByPricing(min, max);
         int listSize = productList.size();
-        boolean exit = false; 
+        boolean exit = false;
         int index = 0;
+        
         if (listSize == 0) {
             System.out.println("No products found.");
             System.out.println("Press Enter to return to Menu Screen.");
@@ -290,10 +292,9 @@ public class SearchScreen implements IScreen {
             router.navigate("/menu", scan);
             return;
         }
-
-        while(!exit){
-
-        Product product = productList.get(index);
+    
+        while (!exit) {
+            Product product = productList.get(index);
             System.out.println("Product List:");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
@@ -303,37 +304,37 @@ public class SearchScreen implements IScreen {
             System.out.println("Pricing: $" + product.getPricing());
             System.out.println("Description: " + product.getDescription());
             System.out.println("-----------------------------");
-
-
-            System.out.println("\n \nPress Enter to go to next page.");
+    
+            System.out.println("\n \nPress Enter to go to the next page.");
             System.out.println("Press [B] to go back.");
-            System.out.println("Press [A] to go add product to cart.");
-            System.out.println("Press [X] to back to Menu Screen.");
+            System.out.println("Press [A] to add the product to the cart.");
+            System.out.println("Press [X] to go back to the Menu Screen.");
             System.out.print("");
+            
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase("X")){
+    
+            if (input.equalsIgnoreCase("X")) {
                 clearScreen();
                 exit = true;
                 router.navigate("/menu", scan);
                 scanner.close();
-            }
-            else{
-
-            clearScreen();
-            if (input.equalsIgnoreCase("B")){
-                index--;
-            }
-            else{
-                index++;
-            }
-                if (index>=listSize){
+                break; // Exit the while loop
+            } else {
+                clearScreen();
+                if (input.equalsIgnoreCase("B")) {
+                    index--;
+                } else {
+                    index++;
+                }
+                if (index >= listSize) {
                     index = 0;
                 }
-                if(index < 0){
+                if (index < 0) {
                     index = listSize - 1;
                 }
             }
+
         }
     }
 }

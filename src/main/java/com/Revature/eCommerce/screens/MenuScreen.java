@@ -36,10 +36,10 @@ public class MenuScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                     case "1":
-                    router.navigate("/browse", scan);
+                        router.navigate("/browse", scan);
                         break exit;
                     case "2":
-                    router.navigate("/search", scan);
+                        router.navigate("/search", scan);
                         break exit;
                     case "3":
                         router.navigate("/cart", scan);
