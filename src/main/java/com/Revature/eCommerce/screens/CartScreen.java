@@ -205,7 +205,7 @@ public class CartScreen implements IScreen
                             continue;
                         }
                         control = false;
-                        historyService.createOrder(items, session, amountSpent);
+                        historyService.createOrder(items);
                         cartService.deleteCart(cart.get().getId());
                         cartService.newCart(session.getId());
                         System.out.print("Order submitted!");

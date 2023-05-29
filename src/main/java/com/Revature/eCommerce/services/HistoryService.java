@@ -16,11 +16,11 @@ public class HistoryService {
     }
 
 
-    public void createOrder(ArrayList<CartItem> items, Session session, int amountSpent) {
+    public void createOrder(ArrayList<CartItem> items) {
         for (CartItem item : items)
         {
             String historyItemId = UUID.randomUUID().toString();
-            historyDao.save(historyItemId, item, session, amountSpent);
+            historyDao.save(historyItemId, item);
         }
 
     }

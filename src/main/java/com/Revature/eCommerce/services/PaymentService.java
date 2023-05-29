@@ -3,8 +3,11 @@ package com.Revature.eCommerce.services;
 public class PaymentService {
     public boolean isValidCC(String cc)
     {
-        String regex = "^[0-9]{16}$";
-        return cc.equalsIgnoreCase(regex);
+
+        if (cc.length() != 16 || !cc.matches("\\d{16}")) {
+            return true;
+        }
+        return false;
     }
     public boolean isValidExp(String exp)
     {

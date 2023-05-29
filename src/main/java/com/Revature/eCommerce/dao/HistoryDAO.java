@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryDAO implements CrudDAO{
 
 
 
-    public void save(String historyItemId,CartItem item, Session session, int amountSpent)
+    public void save(String historyItemId,CartItem item)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "INSERT INTO history_items (history_items_id, quantity, price, history_id, product_id) VALUES (?, ?, ?, ?, ?)";
 
