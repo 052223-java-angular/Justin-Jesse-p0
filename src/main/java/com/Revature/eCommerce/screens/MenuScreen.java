@@ -27,8 +27,7 @@ public class MenuScreen implements IScreen {
                 System.out.println("Press [1] to Browse Products.");
                 System.out.println("Press [2] to Search Products.");
                 System.out.println("Press [3] to View Cart.");
-                System.out.println("Press [4] to Checkout");
-                System.out.println("Press [5] to View History");
+                System.out.println("Press [4] to View History");
                 System.out.println("Press [X] to exit the application.");
 
                 System.out.print("\nEnter: ");
@@ -45,8 +44,6 @@ public class MenuScreen implements IScreen {
                         router.navigate("/cart", scan, "");
                         break exit;
                     case "4":
-                        break exit;
-                    case "5":
                         break exit;
                     case "x":
                     clearScreen();

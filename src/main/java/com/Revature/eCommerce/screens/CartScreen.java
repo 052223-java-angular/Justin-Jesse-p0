@@ -119,7 +119,7 @@ public class CartScreen implements IScreen
                     System.out.println("No items in the cart. Returning to the menu.");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
-                    router.navigate("/menu", scan);
+                    router.navigate("/menu", scan, "");
                 }
                 displayCart();
                 System.out.print("\nEnter the item number to select or [x] to go back: ");
@@ -180,7 +180,7 @@ public class CartScreen implements IScreen
                     System.out.println("No items in the cart. Returning to the menu.");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
-                    router.navigate("/menu", scan);
+                    router.navigate("/menu", scan, "");
                 }
                     System.out.print("\nAre you sure you want to check out? (y/n) ");
                     input = scan.nextLine();
@@ -211,7 +211,7 @@ public class CartScreen implements IScreen
                         System.out.print("Order submitted!");
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
-                        router.navigate("/menu", scan);
+                        router.navigate("/menu", scan, "");
                     } else if (input.equalsIgnoreCase("n")) {
                         start(scan);
                         break;
@@ -232,7 +232,7 @@ public class CartScreen implements IScreen
                     System.out.println("No items in the cart. Returning to the menu.");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
-                    router.navigate("/menu", scan);
+                    router.navigate("/menu", scan, "");
                 }
                 displayCart();
                 System.out.print("\nEnter the number of the item to delete or [x] to go back: ");

@@ -46,3 +46,5 @@ VALUES
 ('R6', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26', 'P5', 5, 'Great taste and good for health.'),
 ('R7', '3bcd6c35-381a-4d03-b765-05e0acefbced', 'P6', 4, 'Juicy and refreshing watermelons.'),
 ('R8', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26', 'P7', 2, 'Prim died...');
+
+insert into HISTORY (history_ID ,user_ID,total_Cost)values ('H1', '3bcfb228-fa11-44c6-9152-4d6ed05a1b26',1502);
