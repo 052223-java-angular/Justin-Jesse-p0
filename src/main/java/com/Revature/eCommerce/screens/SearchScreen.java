@@ -1,11 +1,17 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
+import java.util.Optional;
+import com.Revature.eCommerce.models.Cart;
+import com.Revature.eCommerce.models.CartItem;
+import java.util.UUID;
+import java.util.ArrayList;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.models.Category;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.CategoryService;
+import com.Revature.eCommerce.services.CartService;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,13 +22,15 @@ public class SearchScreen implements IScreen {
     private final RouterService router;
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final CartService cartService;
     
-    public SearchScreen(RouterService router, Session session, ProductService productService, CategoryService categoryService)
+    public SearchScreen(RouterService router, Session session, ProductService productService, CategoryService categoryService, CartService cartService)
     {
         this.router = router; 
         this.session = session;
         this.productService = productService;
         this.categoryService = categoryService;
+        this.cartService = cartService;
     }
 
     /**
@@ -136,6 +144,11 @@ public class SearchScreen implements IScreen {
                 exit = true;   
                 router.navigate("/reviews", scan, product.getProductId());
  
+            }
+            if (input.equalsIgnoreCase("A")) {
+                clearScreen();
+                exit = true;   
+                addToCart(product);
             }
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
@@ -288,6 +301,11 @@ public class SearchScreen implements IScreen {
                 router.navigate("/reviews", scan, product.getProductId());
  
             }
+            if (input.equalsIgnoreCase("A")) {
+                clearScreen();
+                exit = true;   
+                addToCart(product);
+            }
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
                 exit = true;
@@ -376,6 +394,12 @@ public class SearchScreen implements IScreen {
                 router.navigate("/reviews", scan, product.getProductId());
  
             }
+
+            if (input.equalsIgnoreCase("A")) {
+                clearScreen();
+                exit = true;   
+                addToCart(product);
+            }
             if (input.equalsIgnoreCase("X")) {
                 clearScreen();
                 exit = true;
@@ -401,6 +425,40 @@ public class SearchScreen implements IScreen {
             }
 
         }
+    }
+
+    private void addToCart(Product product) {
+        Scanner scan = new Scanner(System.in);
+    
+        Optional<Cart> optionalCart = cartService.getCart(session.getId());
+        Cart cart;
+        if (optionalCart.isPresent()) {
+            cart = optionalCart.get();
+        } else {
+    
+            cart = new Cart(UUID.randomUUID().toString(), session.getId(), 0);
+            cartService.newCart(cart.getId());
+        }
+    
+        ArrayList<CartItem> cartItems = cartService.getCartItems(cart.getId());
+        Optional<CartItem> optionalCartItem = cartItems.stream().filter(item -> item.getProductId().equals(product.getProductId())).findFirst();
+    
+        if (optionalCartItem.isPresent()) {
+            CartItem existingItem = optionalCartItem.get();
+            int newQuantity = existingItem.getQuantity() + 1;
+            cartService.changeItemQuantity(product, newQuantity, cart.getId());
+            System.out.println("Quantity updated in the cart!");
+        } else {
+    
+            CartItem newItem = new CartItem(UUID.randomUUID().toString(), product.getProductId(),
+                    cart.getId(), 1, product.getPricing());
+            cartService.setCart(product, newItem, cart);
+            System.out.println("Item added to the cart!");
+        }
+    
+        System.out.print("\nPress enter to return to browse screen");
+        scan.nextLine();
+        router.navigate("/browse", scan, "");
     }
 }
 

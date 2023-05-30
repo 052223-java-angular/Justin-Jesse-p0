@@ -45,12 +45,7 @@ public class CartDAO implements CrudDAO
     }
 
     @Override
-    public void delete(String id) {
-
-    }
-
-
-    public void deleteItem(String id)
+    public void delete(String id)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "DELETE FROM cart_item where cart_item_id = ?";
 
@@ -68,7 +63,7 @@ public class CartDAO implements CrudDAO
     }
 
     }
-    public void deleteItemFromCart(String id)
+    public void deleteCart(String id)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "DELETE FROM cart_item WHERE cart_ID = ?";
 
@@ -204,8 +199,8 @@ public class CartDAO implements CrudDAO
             ps.setString(1,item.getId());
             ps.setString(2, product.getProductId());
             ps.setString(3, cart.getId());
-            ps.setInt(4, item.getPrice());
-            ps.setInt(5, item.getQuantity());
+            ps.setInt(4, item.getQuantity());// will change, just for testing
+            ps.setInt(5, item.getPrice());
             ps.executeUpdate();
         }
 

@@ -80,7 +80,7 @@ public class HistoryScreen implements IScreen {
         System.out.flush();
     }
     public void displayOrders() {
-        List<HistoryItem> historyList = historyService.getAllHistory();
+        List<HistoryItem> historyList = historyService.getAllHistoryById(session.getId());
         int listSize = historyList.size();
         boolean exit = false; 
         int index = 0;

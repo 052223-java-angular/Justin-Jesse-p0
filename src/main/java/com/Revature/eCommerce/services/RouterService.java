@@ -44,7 +44,7 @@ public class RouterService {
                 break;
 
             case "/search":
-                new SearchScreen(this, session, getProductService(), getCategoryService()).start(scan);
+                new SearchScreen(this, session, getProductService(), getCategoryService(), getCartService()).start(scan);
                 break;
 
             case "/cart":
@@ -80,7 +80,9 @@ public class RouterService {
     {
         return new CartService(new CartDAO());
     }
-    private HistoryService getHistoryService(){return new HistoryService(new HistoryDAO());}
+    private HistoryService getHistoryService() {
+        return new HistoryService(new HistoryDAO(), session);
+    }
     private ProductService getProductService(){
         return new ProductService(new ProductDAO());
     };

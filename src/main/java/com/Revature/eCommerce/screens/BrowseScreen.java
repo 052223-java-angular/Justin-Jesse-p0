@@ -161,9 +161,7 @@ private void addToCart(Product product) {
     }
 
     ArrayList<CartItem> cartItems = cartService.getCartItems(cart.getId());
-    Optional<CartItem> optionalCartItem = cartItems.stream()
-            .filter(item -> item.getProductId().equals(product.getProductId()))
-            .findFirst();
+    Optional<CartItem> optionalCartItem = cartItems.stream().filter(item -> item.getProductId().equals(product.getProductId())).findFirst();
 
     if (optionalCartItem.isPresent()) {
         CartItem existingItem = optionalCartItem.get();
@@ -171,15 +169,16 @@ private void addToCart(Product product) {
         cartService.changeItemQuantity(product, newQuantity, cart.getId());
         System.out.println("Quantity updated in the cart!");
     } else {
-        
+
         CartItem newItem = new CartItem(UUID.randomUUID().toString(), product.getProductId(),
                 cart.getId(), 1, product.getPricing());
         cartService.setCart(product, newItem, cart);
         System.out.println("Item added to the cart!");
     }
 
-    System.out.print("\nPress enter to continue...");
+    System.out.print("\nPress enter to return to browse screen");
     scan.nextLine();
+    router.navigate("/browse", scan, "");
 }
 
 
