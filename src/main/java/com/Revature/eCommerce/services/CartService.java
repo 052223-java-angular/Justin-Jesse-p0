@@ -52,7 +52,7 @@ public class CartService {
 
     public void deleteCart(String id)
     {
-        cartDAO.deleteCart(id);
+        cartDAO.deleteItemFromCart(id);
     }
     public void newCart(String id)
     {

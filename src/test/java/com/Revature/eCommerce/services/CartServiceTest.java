@@ -102,16 +102,30 @@ public class CartServiceTest extends TestCase {
     {
         String itemId = "item1";
         CartItem item = new CartItem(itemId, "product1", "cart1", 1, 10);
-        doNothing().when(cartDao).delete(itemId);
+        doNothing().when(cartDao).deleteItem(itemId);
 
         cartService.deleteItem(item);
 
-        verify(cartDao).delete(itemId);
+        verify(cartDao).deleteItem(itemId);
     }
 
-    public void testDeleteCart() {
+    public void testDeleteCart()
+    {
+        String itemId = "cart1";
+        CartItem item = new CartItem(itemId, "product1", "cart1", 1, 10);
+        doNothing().when(cartDao).deleteItemFromCart(itemId);
+
+        cartService.deleteCart(item.getCartId());
+
+        verify(cartDao).deleteItemFromCart(itemId);
     }
 
     public void testNewCart() {
+        String userId = "user1";
+        doNothing().when(cartDao).update(userId);
+
+        cartService.newCart(userId);
+
+        verify(cartDao).update(userId);
     }
 }
