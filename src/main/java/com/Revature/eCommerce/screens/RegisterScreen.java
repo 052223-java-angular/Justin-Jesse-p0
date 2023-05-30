@@ -33,7 +33,7 @@ public class RegisterScreen implements IScreen
             while (true) {
                 clearScreen();
                 System.out.println("Welcome to the register screen!");
-
+                logger.info("Navigated to Register screen");
                 username = getUsername(scan);
 
                 if (username.equals("x")) {
@@ -55,17 +55,20 @@ public class RegisterScreen implements IScreen
 
                 switch (scan.nextLine()) {
                     case "y":
+                        logger.info("Confirmed credentials");
                         User createdUser = userService.register(username, password);
                         session.setSession(createdUser);
                         router.navigate("/login", scan, "");
                         break exit;
                     case "n":
+                        logger.info("Restarting register");
                         clearScreen();
                         System.out.println("Restarting process...");
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
                         break;
                     default:
+                        logger.warn("Invalid option");
                         clearScreen();
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
@@ -88,6 +91,7 @@ public class RegisterScreen implements IScreen
             }
 
             if (!userService.isValidUsername(username)) {
+                logger.warn("Invlalid username");
                 clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");
@@ -97,6 +101,7 @@ public class RegisterScreen implements IScreen
 
             if (!userService.isUniqueUsername(username)) {
                 clearScreen();
+                logger.warn("Invalid username. Not unique");
                 System.out.println("Username is not unique!");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -122,6 +127,7 @@ public class RegisterScreen implements IScreen
             }
 
             if (!userService.isValidPassword(password)) {
+                logger.warn("Invalid password");
                 clearScreen();
                 System.out.println("Password needs to be minimum 8 characters, at least 1 letter and 1 number");
                 System.out.print("\nPress enter to continue...");
@@ -138,6 +144,7 @@ public class RegisterScreen implements IScreen
 
             if (!userService.isSamePassword(password, confirmPassword)) {
                 clearScreen();
+                logger.warn("Passwords did not match when registering");
                 System.out.println("Passwords do not match");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
