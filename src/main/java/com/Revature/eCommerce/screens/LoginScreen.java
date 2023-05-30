@@ -57,7 +57,7 @@ public class LoginScreen implements IScreen
                         if(validUser!=null)
                         {
                         session.setSession(validUser);
-                        router.navigate("/menu", scan);
+                        router.navigate("/menu", scan, "");
                         break exit;
                         }
                         else
@@ -101,7 +101,7 @@ public class LoginScreen implements IScreen
                 return "x";
             }
 
-            if (!UserService.isValidUsername(username)) {
+            if (!userService.isValidUsername(username)) {
                clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");

@@ -11,46 +11,51 @@ import java.util.Optional;
 
 public class CartService {
     private final CartDAO cartDAO;
-    public CartService(CartDAO cartDAO)
-    {
+
+    public CartService(CartDAO cartDAO) {
         this.cartDAO = cartDAO;
     }
 
-    public ArrayList<CartItem> getCartItems(String cartID)
-    {
+    public ArrayList<CartItem> getCartItems(String cartID) {
 
         return cartDAO.getCartItems(cartID);
-   }
-   public Optional<Cart> getCart(String userId)
-   {
+    }
 
-       return cartDAO.getCart(userId);
-   }
+    public Optional<Cart> getCart(String userId) {
 
-   public void changeItemQuantity(Product product, int quantity, String cartId)
-   {
-       cartDAO.changeItemQuantity(product.getProductId(), quantity, cartId);
+        return cartDAO.getCart(userId);
+    }
 
-   }
-   public void changeItemPrice(Product product, int updatedPrice, String cartId)
-   {
-       cartDAO.changeItemPrice( product, updatedPrice, cartId);
+    public void changeItemQuantity(Product product, int quantity, String cartId) {
+        cartDAO.changeItemQuantity(product.getProductId(), quantity, cartId);
 
-   }
+    }
 
-    public int calculatePrice(Product product, int quantity)
-    {
-      return product.getPricing() * quantity;
+    public void changeItemPrice(Product product, int updatedPrice, String cartId) {
+        cartDAO.changeItemPrice(product, updatedPrice, cartId);
+
+    }
+
+    public int calculatePrice(Product product, int quantity) {
+        return product.getPricing() * quantity;
     }
 
 
     public int getAmountSpent(ArrayList<CartItem> items)
     {
-       return items.stream().mapToInt(CartItem::getPrice).sum();
+        return items.stream().mapToInt(CartItem::getPrice).sum();
     }
 
-    public void deleteItem(CartItem item)
-    {
+    public void deleteItem(CartItem item) {
         cartDAO.delete(item.getId());
+    }
+
+    public void deleteCart(String id)
+    {
+        cartDAO.deleteCart(id);
+    }
+    public void newCart(String id)
+    {
+        cartDAO.update(id);
     }
 }

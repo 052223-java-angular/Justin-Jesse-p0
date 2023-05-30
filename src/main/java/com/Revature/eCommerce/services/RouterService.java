@@ -2,34 +2,24 @@ package com.Revature.eCommerce.services;
 
 import java.util.Scanner;
 
-import com.Revature.eCommerce.dao.CartDAO;
-import com.Revature.eCommerce.dao.RoleDAO;
-import com.Revature.eCommerce.dao.UserDAO;
+import com.Revature.eCommerce.dao.*;
 import com.Revature.eCommerce.screens.*;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.dao.CategoryDAO;
+import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
-//import com.Revature.eCommerce.models.Category;
-//import com.Revature.eCommerce.services.CategoryService;
-//import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.screens.HomeScreen;
 import com.Revature.eCommerce.screens.LoginScreen;
 import com.Revature.eCommerce.screens.MenuScreen;
 import com.Revature.eCommerce.screens.RegisterScreen;
 import com.Revature.eCommerce.screens.BrowseScreen;
 import com.Revature.eCommerce.screens.SearchScreen;
+import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class RouterService {
     private Session session;
     private Product product;
-
-    public RouterService()
-    {
-        
-    }
     public RouterService(Session session, Product product)
     {
         this.session = session;
@@ -37,7 +27,7 @@ public class RouterService {
 
     }
 
-    public void navigate(String path, Scanner scan) {
+    public void navigate(String path, Scanner scan, String productId) {
         switch (path) {
 
             case "/home":
@@ -57,7 +47,7 @@ public class RouterService {
                 break;
 
             case "/browse":
-                new BrowseScreen(this, session, product, getProductService()).start(scan);
+                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService()).start(scan);
                 break;
 
             case "/search":
@@ -65,13 +55,14 @@ public class RouterService {
                 break;
 
             case "/cart":
-                new CartScreen(getCartService(),getProductService(),this,session).start(scan);
+                new CartScreen(getCartService(),getProductService(),getHistoryService(),this,session).start(scan);
                 break;
 
             case "/payment":
                 break;
 
-            case "/review":
+            case "/reviews":
+                new ReviewsAndRatingsScreen(this, getReviewsAndRatingsService(), productId, session).start(scan);
                 break;
 
             default:
@@ -95,6 +86,7 @@ public class RouterService {
     {
         return new CartService(new CartDAO());
     }
+    private HistoryService getHistoryService(){return new HistoryService(new HistoryDAO());}
     private ProductService getProductService(){
         return new ProductService(new ProductDAO());
     };
@@ -103,5 +95,11 @@ public class RouterService {
     {
         return new CategoryService(new CategoryDAO());
     }
+
+    private ReviewsAndRatingsService getReviewsAndRatingsService()
+    {
+        return new ReviewsAndRatingsService(new ReviewsAndRatingsDAO());
+    }
+
 
 }

@@ -55,7 +55,7 @@ public class RegisterScreen implements IScreen
                     case "y":
                         User createdUser = userService.register(username, password);
                         session.setSession(createdUser);
-                        router.navigate("/login", scan);
+                        router.navigate("/login", scan, "");
                         break exit;
                     case "n":
                         clearScreen();
@@ -85,7 +85,7 @@ public class RegisterScreen implements IScreen
                 return "x";
             }
 
-            if (!UserService.isValidUsername(username)) {
+            if (!userService.isValidUsername(username)) {
                 clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");
