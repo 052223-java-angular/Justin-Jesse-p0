@@ -6,10 +6,13 @@ import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.User;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.services.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 //@AllArgsConstructor
 public class RegisterScreen implements IScreen 
 {
+    private static Logger logger = LogManager.getLogger(RegisterScreen.class);
     private final UserService userService;
     private final RouterService router;
     private Session session;
@@ -23,7 +26,6 @@ public class RegisterScreen implements IScreen
 
     @Override
     public void start(Scanner scan) {
-        //String input = "";
         String username = "";
         String password = "";
 
