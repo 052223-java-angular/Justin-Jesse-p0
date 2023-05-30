@@ -50,6 +50,10 @@ public class CartService {
         cartDAO.deleteItem(item.getId());
     }
 
+    public void setCart(Product product, CartItem item, Cart cart){
+        cartDAO.setCart(product, item, cart);
+    }
+
     public void deleteCart(String id)
     {
         cartDAO.deleteItemFromCart(id);

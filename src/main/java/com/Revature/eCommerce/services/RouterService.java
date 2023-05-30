@@ -40,7 +40,7 @@ public class RouterService {
                 break;
 
             case "/browse":
-                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService()).start(scan);
+                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService(), getCartService()).start(scan);
                 break;
 
             case "/search":
