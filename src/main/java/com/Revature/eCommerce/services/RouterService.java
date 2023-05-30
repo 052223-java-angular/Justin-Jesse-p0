@@ -9,13 +9,6 @@ import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.dao.CategoryDAO;
 import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
-import com.Revature.eCommerce.screens.HomeScreen;
-import com.Revature.eCommerce.screens.LoginScreen;
-import com.Revature.eCommerce.screens.MenuScreen;
-import com.Revature.eCommerce.screens.RegisterScreen;
-import com.Revature.eCommerce.screens.BrowseScreen;
-import com.Revature.eCommerce.screens.SearchScreen;
-import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
 
 public class RouterService {
     private Session session;
@@ -58,15 +51,16 @@ public class RouterService {
                 new CartScreen(getCartService(),getProductService(),getHistoryService(),this,session).start(scan);
                 break;
 
-            case "/payment":
-                break;
 
             case "/reviews":
                 new ReviewsAndRatingsScreen(this, getReviewsAndRatingsService(), productId, session).start(scan);
                 break;
+               
+            case "/history":
+                new HistoryScreen(this, session, getHistoryService()).start(scan);
+                break;
 
             default:
-            case "/history":
             break;
 
         }
