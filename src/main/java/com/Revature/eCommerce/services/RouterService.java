@@ -9,6 +9,7 @@ import com.Revature.eCommerce.screens.*;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.dao.CategoryDAO;
+import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.screens.HomeScreen;
 import com.Revature.eCommerce.screens.LoginScreen;
@@ -16,6 +17,7 @@ import com.Revature.eCommerce.screens.MenuScreen;
 import com.Revature.eCommerce.screens.RegisterScreen;
 import com.Revature.eCommerce.screens.BrowseScreen;
 import com.Revature.eCommerce.screens.SearchScreen;
+import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
 
 //@AllArgsConstructor
 //@NoArgsConstructor
@@ -34,7 +36,7 @@ public class RouterService {
 
     }
 
-    public void navigate(String path, Scanner scan) {
+    public void navigate(String path, Scanner scan, String productId) {
         switch (path) {
 
             case "/home":
@@ -54,7 +56,7 @@ public class RouterService {
                 break;
 
             case "/browse":
-                new BrowseScreen(this, session, product, getProductService()).start(scan);
+                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService()).start(scan);
                 break;
 
             case "/search":
@@ -68,7 +70,8 @@ public class RouterService {
             case "/payment":
                 break;
 
-            case "/review":
+            case "/reviews":
+                new ReviewsAndRatingsScreen(this, getReviewsAndRatingsService(), productId, session).start(scan);
                 break;
 
             default:
@@ -100,5 +103,11 @@ public class RouterService {
     {
         return new CategoryService(new CategoryDAO());
     }
+
+    private ReviewsAndRatingsService getReviewsAndRatingsService()
+    {
+        return new ReviewsAndRatingsService(new ReviewsAndRatingsDAO());
+    }
+
 
 }

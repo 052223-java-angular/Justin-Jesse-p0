@@ -69,7 +69,7 @@ public class CartScreen implements IScreen
                         break;
                     case "x":
                         clearScreen();
-                        router.navigate("/menu", scan);
+                        router.navigate("/menu", scan, "");
                         break exit;
                     default:
                         clearScreen();

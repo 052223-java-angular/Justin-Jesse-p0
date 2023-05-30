@@ -55,7 +55,7 @@ public class RegisterScreen implements IScreen
                     case "y":
                         User createdUser = userService.register(username, password);
                         session.setSession(createdUser);
-                        router.navigate("/login", scan);
+                        router.navigate("/login", scan, "");
                         break exit;
                     case "n":
                         clearScreen();
