@@ -1,6 +1,9 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 
+import com.Revature.eCommerce.dao.CartDAO;
+import com.Revature.eCommerce.models.Cart;
+import com.Revature.eCommerce.services.CartService;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.services.RouterService;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +27,7 @@ public class MenuScreen implements IScreen {
      */
     @Override
     public void start(Scanner scan) {
+        doesUserHaveCart(session.getId());
         logger.info("Navigated to Menu");
         String input = "";
 
@@ -73,5 +77,16 @@ public class MenuScreen implements IScreen {
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    private void doesUserHaveCart(String userId)
+    {
+        if (new CartService(new CartDAO()).doesUserHaveCart(userId))
+        {
+
+        }
+        else{
+            new CartService(new CartDAO()).createCart(userId);
+        }
     }
 }

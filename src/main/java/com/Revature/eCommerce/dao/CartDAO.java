@@ -218,5 +218,25 @@ public class CartDAO implements CrudDAO
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
+
+    public void createCart(String userId)
+    {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+        String sql = "INSERT INTO cart (cart_id, user_id, amount_spent) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1,UUID.randomUUID().toString());
+            ps.setString(2, userId);
+            ps.setInt(3, 0);
+            ps.executeUpdate();
+        }
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Unable to connect to db");
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties");
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Unable to load jdbc");
+    }
+    }
 }
 

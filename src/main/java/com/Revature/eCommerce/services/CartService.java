@@ -47,7 +47,7 @@ public class CartService {
     }
 
     public void deleteItem(CartItem item) {
-        cartDAO.deleteItem(item.getId());
+        cartDAO.delete(item.getId());
     }
 
     public void setCart(Product product, CartItem item, Cart cart){
@@ -56,10 +56,20 @@ public class CartService {
 
     public void deleteCart(String id)
     {
-        cartDAO.deleteItemFromCart(id);
+        cartDAO.deleteCart(id);
     }
     public void newCart(String id)
     {
         cartDAO.update(id);
+    }
+
+    public boolean doesUserHaveCart(String userID)
+    {
+        Optional<Cart> cartOptional = cartDAO.getCart(userID);
+        return cartOptional.isPresent();
+    }
+    public void createCart(String userId)
+    {
+        cartDAO.createCart(userId);
     }
 }
