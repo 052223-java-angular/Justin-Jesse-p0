@@ -1,9 +1,9 @@
 package com.Revature.eCommerce.services;
-
+import java.util.List;
 import com.Revature.eCommerce.models.CartItem;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.dao.HistoryDAO;
-
+import com.Revature.eCommerce.models.HistoryItem;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -23,5 +23,9 @@ public class HistoryService {
             historyDao.save(historyItemId, item);
         }
 
+    }
+    public List<HistoryItem> getAllHistory(){
+        List<HistoryItem> history = historyDao.getAllHistory();
+        return history;
     }
 }
