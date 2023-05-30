@@ -11,10 +11,24 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class cart 
+public class Cart 
 {
+
+
     private String id;
-    private String productId;
     private String userId;
-    private int count;
+    private int amountSpent;
+    public int getAmountSpent() {
+        return amountSpent;
+    }
+
+    public void setAmountSpent(int amountSpent) {
+        this.amountSpent = amountSpent;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+
 }
