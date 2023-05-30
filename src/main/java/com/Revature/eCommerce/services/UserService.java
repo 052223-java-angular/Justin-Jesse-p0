@@ -30,18 +30,17 @@ public class UserService {
     //Checks to see if user is in datebase
     public User checkUser(String username, String password)
     {
-        /*  This is the actual method Currently out for testing cart
-       Optional<User> optionalUser = userDao.findByUsername(username);
-        if (optionalUser.isPresent())
-        {
+        Optional<User> optionalUser = userDao.findByUsername(username);
+        if (optionalUser.isPresent()) {
+
             User user = optionalUser.get();
-            if (BCrypt.checkpw(password, user.getPassword()))
-            {
-                return user;
+
+            if (BCrypt.checkpw(password, user.getPassword())) {
+
+                return userDao.checkUser(user);
             }
         }
-        return null;*/
-       return  userDao.checkUser(username, password);
+        return null;
     }
 
     public boolean isValidUsername(String username) {

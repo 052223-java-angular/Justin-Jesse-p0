@@ -1,10 +1,13 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
+
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.services.RouterService;
-//@AllArgsConstructor
-//@NoArgsConstructor
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class MenuScreen implements IScreen {
+    private static Logger logger = LogManager.getLogger(MenuScreen.class);
     private Session session;
     private final RouterService router;
 
@@ -15,8 +18,13 @@ public class MenuScreen implements IScreen {
 
     }
 
+    /**
+     * Displays menu for the user to select for different features
+     * @param scan
+     */
     @Override
     public void start(Scanner scan) {
+        logger.info("Navigated to Menu");
         String input = "";
 
         exit: {

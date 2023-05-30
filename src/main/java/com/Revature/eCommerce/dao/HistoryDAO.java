@@ -17,6 +17,7 @@ public class HistoryDAO implements CrudDAO{
 
 
 
+    //need to pass in History ID
     public void save(String historyItemId,CartItem item)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "INSERT INTO history_items (history_items_id, quantity, price, history_id, product_id) VALUES (?, ?, ?, ?, ?)";
@@ -25,7 +26,7 @@ public class HistoryDAO implements CrudDAO{
             ps.setString(1,historyItemId);
             ps.setInt(2, item.getQuantity());
             ps.setInt(3, item.getPrice());
-            ps.setString(4, historyItemId);//
+            ps.setString(4,);//needs to pass the history
             ps.setString(5, item.getProductId());
             ps.executeUpdate();
         }

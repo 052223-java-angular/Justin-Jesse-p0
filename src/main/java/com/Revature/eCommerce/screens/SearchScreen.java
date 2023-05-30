@@ -7,13 +7,12 @@ import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.CategoryService;
 import java.util.List;
-//import com.Revature.eCommerce.dao.ProductDAO;
-//import com.Revature.eCommerce.dao.CategoryDAO;
-//@AllArgsConstructor
-//@NoArgsConstructor
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class SearchScreen implements IScreen {
+    private static Logger logger = LogManager.getLogger(SearchScreen.class);
     private Session session;
-    //private Product product;
     private final RouterService router;
     private final ProductService productService;
     private final CategoryService categoryService;
@@ -26,10 +25,14 @@ public class SearchScreen implements IScreen {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Prompts the user to search for product by name, category, price or return to menu
+     * @param scan
+     */
     @Override
     public void start(Scanner scan) {
         String input = "";
-
+        logger.info("Navigated to product search screen");
         exit: {
             while (true) {
                 clearScreen();
@@ -45,22 +48,27 @@ public class SearchScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                     case "1":
+                        logger.info("Displaying products by product name");
                     DisplaySearchedProductName(scan);
                         break exit;
                     case "2":
+                        logger.info("Displaying products by category");
                     CategoryDisplay(scan);
                         break exit;
                     case "3":
-                    DisplaySearchedProductPricing(scan);
+                        logger.info("Displaying products by price");
+                        DisplaySearchedProductPricing(scan);
                         break exit;
 
                     case "x":
                     clearScreen();
+                    logger.info("Exiting product search screen");
                     router.navigate("/menu", scan, "");
                         break exit;
 
                     default:
                         clearScreen();
+                        logger.warn("Invalid option user input: {}", input);
                         System.out.println("Invalid Option!");
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
@@ -75,19 +83,27 @@ public class SearchScreen implements IScreen {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+    /**
+     * Displays the product by name
+     * @param scan
+     */
     public void DisplaySearchedProductName(Scanner scan) {
         clearScreen();
         System.out.println("Enter Product Name: ");
         String name = scan.nextLine();
+        logger.info("User entered product for: {} ",name);
         List<Product> productList = productService.findProductByName(name);
         int listSize = productList.size();
         boolean exit = false; 
         int index = 0;
         if (listSize == 0) {
+            logger.warn("No products were found for {}:", name);
             System.out.println("No products found.");
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
+            logger.info("Navigating to menu screen");
             router.navigate("/menu", scan, "");
             return;
         }
@@ -116,12 +132,14 @@ public class SearchScreen implements IScreen {
             String input = scanner.nextLine().trim();
             if (input.equalsIgnoreCase("R")) {
                 clearScreen();
+                logger.info("Navigating to product reviews");
                 exit = true;   
                 router.navigate("/reviews", scan, product.getProductId());
  
             }
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
+                logger.info("Navigating to menu");
                 exit = true;
                 router.navigate("/menu", scan, "");
                 scanner.close();
@@ -131,9 +149,11 @@ public class SearchScreen implements IScreen {
 
                 clearScreen();
             if (input.equalsIgnoreCase("B")){
+                logger.info("User viewing previous product");
                 index--;
             }
             else{
+                logger.info("User viewing next product");
                 index++;
             }
                 if (index>=listSize){
@@ -146,8 +166,13 @@ public class SearchScreen implements IScreen {
         }
     }
 
+    /**
+     * Displays the categories for the user to select
+     * @param scan
+     */
     public void CategoryDisplay(Scanner scan) {
         clearScreen();
+        logger.info("Displaying category for user to select");
         List<Category> categoryList = categoryService.getAllCategories();
         int listSize = categoryList.size();
 
@@ -156,8 +181,6 @@ public class SearchScreen implements IScreen {
         System.out.println("Category List:");
         System.out.println("-----------------------------");
 
-
-           // System.out.println("List Size = " + listSize);
            for (int i = 0 ; i < listSize; i++){
             Category category = categoryList.get(i);
             System.out.println("Category " + category.getCategory_ID() + " " + category.getCategory_Name());
@@ -186,10 +209,12 @@ public class SearchScreen implements IScreen {
 
             } 
             catch (NumberFormatException e) {
+                logger.warn("User input is invalid for {}", input);
                 System.out.println("Invalid Input.");
                 System.out.println("Press Enter to return to Menu Screen.");
                 scan.nextLine();
                 clearScreen();
+                logger.info("Navigating to menu screen");
                 router.navigate("/menu", scan, "");
             }
             
@@ -203,16 +228,22 @@ public class SearchScreen implements IScreen {
             
 
             else {
+                logger.warn("User invalid input for: {}", input);
             System.out.println("Invalid Input");
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
+            logger.info("Navigating to menu screen");
             router.navigate("/menu", scan, "");
             }
         }
-    
 
+    /**
+     * Displays the products by category
+     * @param category
+     */
     public void DisplaySearchedProductCategory(String category) {
+        logger.info("Displaying products by category: {}", category);
         Scanner scan = new Scanner(System.in);
         clearScreen();
         List<Product> productList = productService.findProductByCategory(category);
@@ -252,13 +283,15 @@ public class SearchScreen implements IScreen {
             String input = scanner.nextLine().trim();
             if (input.equalsIgnoreCase("R")) {
                 clearScreen();
-                exit = true;   
+                exit = true;
+                logger.info("Navigating to reviews screen");
                 router.navigate("/reviews", scan, product.getProductId());
  
             }
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
                 exit = true;
+                logger.info("Navigating to menu screen");
                 router.navigate("/menu", scan, "");
                 scanner.close();
 
@@ -267,9 +300,11 @@ public class SearchScreen implements IScreen {
 
                 clearScreen();
             if (input.equalsIgnoreCase("B")){
+                logger.info("User viewing previous product");
                 index--;
             }
             else{
+                logger.info("User viewing next product");
                 index++;
             }
                 if (index>=listSize){
@@ -281,6 +316,11 @@ public class SearchScreen implements IScreen {
             }
         }
     }
+
+    /**
+     * Displays the products by the price range Min - Max
+     * @param scan
+     */
     public void DisplaySearchedProductPricing(Scanner scan) {
         clearScreen();
         System.out.println("Enter Minimum Value ");
@@ -292,7 +332,7 @@ public class SearchScreen implements IScreen {
         int max = scan.nextInt();
         scan.nextLine();
         clearScreen();
-
+        logger.debug("Displaying products by pricing min{}, max{}", min,max);
         List<Product> productList = productService.findProductByPricing(min, max);
         int listSize = productList.size();
         boolean exit = false;
@@ -303,6 +343,7 @@ public class SearchScreen implements IScreen {
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
+            logger.warn("No products found, Navigating back to menu");
             router.navigate("/menu", scan, "");
             return;
         }
@@ -330,21 +371,25 @@ public class SearchScreen implements IScreen {
             String input = scanner.nextLine().trim();
             if (input.equalsIgnoreCase("R")) {
                 clearScreen();
-                exit = true;   
+                exit = true;
+                logger.info("Navigating to reviews");
                 router.navigate("/reviews", scan, product.getProductId());
  
             }
             if (input.equalsIgnoreCase("X")) {
                 clearScreen();
                 exit = true;
+                logger.info("Navigating to menu screen");
                 router.navigate("/menu", scan, "");
                 scanner.close();
                 break; // Exit the while loop
             } else {
                 clearScreen();
                 if (input.equalsIgnoreCase("B")) {
+                    logger.info("User viewing previous product");
                     index--;
                 } else {
+                    logger.info("User viewing next product");
                     index++;
                 }
                 if (index >= listSize) {

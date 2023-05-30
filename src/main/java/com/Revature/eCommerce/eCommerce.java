@@ -28,7 +28,6 @@ public class eCommerce {
     RouterService router = new RouterService(new Session(), new Product());
     router.navigate("/home", scan, "");
     logger.info("--------------------End Application--------------------");
-
     scan.close();
   }
 }
