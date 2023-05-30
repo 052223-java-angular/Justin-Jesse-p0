@@ -47,7 +47,7 @@ public class CartService {
     }
 
     public void deleteItem(CartItem item) {
-        cartDAO.delete(item.getId());
+        cartDAO.deleteItem(item.getId());
     }
 
     public void deleteCart(String id)

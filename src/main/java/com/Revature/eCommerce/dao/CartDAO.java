@@ -48,7 +48,12 @@ public class CartDAO implements CrudDAO
     }
 
     @Override
-    public void delete(String id)
+    public void delete(String id) {
+
+    }
+
+
+    public void deleteItem(String id)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "DELETE FROM cart_item where cart_item_id = ?";
 
