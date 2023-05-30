@@ -199,8 +199,8 @@ public class CartDAO implements CrudDAO
             ps.setString(1,item.getId());
             ps.setString(2, product.getProductId());
             ps.setString(3, cart.getId());
-            ps.setInt(4, item.getPrice());// will change, just for testing
-            ps.setInt(5, item.getQuantity());
+            ps.setInt(4, item.getQuantity());// will change, just for testing
+            ps.setInt(5, item.getPrice());
             ps.executeUpdate();
         }
 
