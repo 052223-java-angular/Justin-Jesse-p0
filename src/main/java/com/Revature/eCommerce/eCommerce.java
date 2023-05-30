@@ -14,7 +14,7 @@ public class eCommerce {
     System.out.println(ConnectionFaction.getInstance());//if hashcode displays connection is successful, will delete
     Scanner scan = new Scanner(System.in);
     RouterService router = new RouterService(new Session(), new Product());
-    router.navigate("/home", scan);
+    router.navigate("/home", scan, "");
     scan.close();
   }
 }

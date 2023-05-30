@@ -57,7 +57,7 @@ public class LoginScreen implements IScreen
                         if(validUser!=null)
                         {
                         session.setSession(validUser);
-                        router.navigate("/menu", scan);
+                        router.navigate("/menu", scan, "");
                         break exit;
                         }
                         else

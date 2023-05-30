@@ -56,7 +56,7 @@ public class SearchScreen implements IScreen {
 
                     case "x":
                     clearScreen();
-                    router.navigate("/menu", scan);
+                    router.navigate("/menu", scan, "");
                         break exit;
 
                     default:
@@ -88,7 +88,7 @@ public class SearchScreen implements IScreen {
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
-            router.navigate("/menu", scan);
+            router.navigate("/menu", scan, "");
             return;
         }
 
@@ -109,14 +109,21 @@ public class SearchScreen implements IScreen {
             System.out.println("\n \nPress Enter to go to next page.");
             System.out.println("Press [B] to go back.");
             System.out.println("Press [A] to go add product to cart.");
+            System.out.println("Press [R] to View Reviews.");
             System.out.println("Press [X] to back to Menu Screen.");
             System.out.print("");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
+            if (input.equalsIgnoreCase("R")) {
+                clearScreen();
+                exit = true;   
+                router.navigate("/reviews", scan, product.getProductId());
+ 
+            }
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
                 exit = true;
-                router.navigate("/menu", scan);
+                router.navigate("/menu", scan, "");
                 scanner.close();
 
             }
@@ -169,7 +176,7 @@ public class SearchScreen implements IScreen {
 
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
-                router.navigate("/menu", scan);
+                router.navigate("/menu", scan, "");
                 scanner.close();
 
             }
@@ -183,7 +190,7 @@ public class SearchScreen implements IScreen {
                 System.out.println("Press Enter to return to Menu Screen.");
                 scan.nextLine();
                 clearScreen();
-                router.navigate("/menu", scan);
+                router.navigate("/menu", scan, "");
             }
             
             if (index != 0 && index <= listSize ){
@@ -200,7 +207,7 @@ public class SearchScreen implements IScreen {
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
-            router.navigate("/menu", scan);
+            router.navigate("/menu", scan, "");
             }
         }
     
@@ -217,7 +224,7 @@ public class SearchScreen implements IScreen {
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
-            router.navigate("/menu", scan);
+            router.navigate("/menu", scan, "");
             return;
         }
 
@@ -238,14 +245,21 @@ public class SearchScreen implements IScreen {
             System.out.println("\n \nPress Enter to go to next page.");
             System.out.println("Press [B] to go back.");
             System.out.println("Press [A] to go add product to cart.");
+            System.out.println("Press [R] to View Reviews.");
             System.out.println("Press [X] to back to Menu Screen.");
             System.out.print("");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
+            if (input.equalsIgnoreCase("R")) {
+                clearScreen();
+                exit = true;   
+                router.navigate("/reviews", scan, product.getProductId());
+ 
+            }
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
                 exit = true;
-                router.navigate("/menu", scan);
+                router.navigate("/menu", scan, "");
                 scanner.close();
 
             }
@@ -289,7 +303,7 @@ public class SearchScreen implements IScreen {
             System.out.println("Press Enter to return to Menu Screen.");
             scan.nextLine();
             clearScreen();
-            router.navigate("/menu", scan);
+            router.navigate("/menu", scan, "");
             return;
         }
     
@@ -308,16 +322,22 @@ public class SearchScreen implements IScreen {
             System.out.println("\n \nPress Enter to go to the next page.");
             System.out.println("Press [B] to go back.");
             System.out.println("Press [A] to add the product to the cart.");
+            System.out.println("Press [R] to View Reviews.");
             System.out.println("Press [X] to go back to the Menu Screen.");
             System.out.print("");
             
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
-    
+            if (input.equalsIgnoreCase("R")) {
+                clearScreen();
+                exit = true;   
+                router.navigate("/reviews", scan, product.getProductId());
+ 
+            }
             if (input.equalsIgnoreCase("X")) {
                 clearScreen();
                 exit = true;
-                router.navigate("/menu", scan);
+                router.navigate("/menu", scan, "");
                 scanner.close();
                 break; // Exit the while loop
             } else {
