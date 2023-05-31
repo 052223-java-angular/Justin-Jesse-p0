@@ -5,6 +5,8 @@ import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.CartItem;
 import java.util.UUID;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.models.Category;
@@ -342,16 +344,35 @@ public class SearchScreen implements IScreen {
      * @param scan
      */
     public void DisplaySearchedProductPricing(Scanner scan) {
+        int min = 0;
+        int max = 0;
+        
         clearScreen();
+        try{
         System.out.println("Enter Minimum Value ");
-        int min = scan.nextInt();
+        min = scan.nextInt();
         scan.nextLine();
         clearScreen();
-    
+        }
+        catch(InputMismatchException e){
+         System.out.println("Input must be a number");
+         System.out.println("Press anything to try again...");
+         scan.nextLine();
+         DisplaySearchedProductPricing(scan);
+        }
+        try{
         System.out.println("Enter Maximum Value ");
-        int max = scan.nextInt();
+        max = scan.nextInt();
         scan.nextLine();
         clearScreen();
+        }
+
+        catch(InputMismatchException e){
+            System.out.println("Input must be a number");
+            System.out.println("Press anything to try again...");
+            scan.nextLine();
+            DisplaySearchedProductPricing(scan);
+        }
         logger.debug("Displaying products by pricing min{}, max{}", min,max);
         List<Product> productList = productService.findProductByPricing(min, max);
         int listSize = productList.size();
