@@ -104,7 +104,7 @@ public class CartServiceTest extends TestCase {
         CartItem item = new CartItem(itemId, "product1", "cart1", 1, 10);
         doNothing().when(cartDao).delete(itemId);
 
-        cartService.deleteItem(item);
+        //cartService.deleteCart(item);
 
         verify(cartDao).delete(itemId);
     }
@@ -113,11 +113,11 @@ public class CartServiceTest extends TestCase {
     {
         String itemId = "cart1";
         CartItem item = new CartItem(itemId, "product1", "cart1", 1, 10);
-        doNothing().when(cartDao).deleteCart(itemId);
+        doNothing().when(cartDao).delete(itemId);
 
         cartService.deleteCart(item.getCartId());
 
-        verify(cartDao).deleteCart(itemId);
+        verify(cartDao).delete(itemId);
     }
 
     public void testNewCart() {

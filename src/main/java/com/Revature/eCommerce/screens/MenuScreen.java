@@ -2,7 +2,11 @@ package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 
 import com.Revature.eCommerce.dao.CartDAO;
+
+import com.Revature.eCommerce.dao.HistoryDAO;
+import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.services.CartService;
+import com.Revature.eCommerce.services.HistoryService;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.services.RouterService;
 import org.apache.logging.log4j.LogManager;
@@ -22,11 +26,12 @@ public class MenuScreen implements IScreen {
 
     /**
      * Displays menu for the user to select for different features
-     * @param scan - takes in user input
+     * @param scan
      */
     @Override
     public void start(Scanner scan) {
-        doesUserHaveCart(session.getId()); // verifies if user has a cart
+        doesUserHaveCart(session.getId());
+        doesUserHaveHistory(session.getId());
         logger.info("Navigated to Menu");
         String input = "";
 
@@ -46,19 +51,15 @@ public class MenuScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                     case "1":
-                        logger.info("Navigating to browse screen");
                         router.navigate("/browse", scan, "");
                         break exit;
                     case "2":
-                        logger.info("Navigating to search products screen");
                         router.navigate("/search", scan, "");
                         break exit;
                     case "3":
-                        logger.info("Navigating to cart screen");
                         router.navigate("/cart", scan, "");
                         break exit;
                     case "4":
-                        logger.info("Navigating to history screen");
                          router.navigate("/history", scan, "");
                         break exit;
                     case "x":
@@ -90,6 +91,17 @@ public class MenuScreen implements IScreen {
         }
         else{
             new CartService(new CartDAO()).createCart(userId);
+        }
+    }
+
+    private void doesUserHaveHistory(String userId)
+    {
+        if (new HistoryService(new HistoryDAO()).doesUserHaveHistory(userId))
+        {
+
+        }
+        else{
+            new HistoryService(new HistoryDAO()).createHistory(userId);;
         }
     }
 }

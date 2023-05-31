@@ -1,5 +1,5 @@
 package com.Revature.eCommerce;
-
+import com.Revature.eCommerce.models.History;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.utils.Session;
@@ -25,7 +25,7 @@ public class eCommerce {
   {
     logger.info("--------------------Start Application--------------------");
     Scanner scan = new Scanner(System.in);
-    RouterService router = new RouterService(new Session(), new Product());
+    RouterService router = new RouterService(new Session(), new Product(), new History());
     router.navigate("/home", scan, "");
     logger.info("--------------------End Application--------------------");
     scan.close();

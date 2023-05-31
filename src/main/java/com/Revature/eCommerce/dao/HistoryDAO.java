@@ -18,7 +18,7 @@ public class HistoryDAO implements CrudDAO{
 
     public void save(String historyItemId, CartItem item, String historyId)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-        String sql = "INSERT INTO history_items (history_items_id, quantity, price, history_id, product_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO HISTORY_ITEMS (history_Items_ID, quantity, price, history_ID, product_ID) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1,historyItemId);
@@ -93,22 +93,22 @@ public class HistoryDAO implements CrudDAO{
         return historyList;
     }
 
-    public List<HistoryItem> getAllHistoryById(String userId) {
+    public List<HistoryItem> getAllHistoryById(String historyID) {
         List<HistoryItem> historyList = new ArrayList<>();
         try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-            String sql = "SELECT * FROM HISTORYITEMS WHERE user_ID = ?";
+            String sql = "SELECT * FROM HISTORY_ITEMS WHERE history_ID = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, userId);
+                ps.setString(1, historyID);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         HistoryItem history = new HistoryItem();
-                        history.setId(rs.getString("history_ID"));
-                        history.setProductId(rs.getString("product_ID"));
-                        history.setHistoryId(rs.getString("history_Items_ID"));
-                        history.setQuantity(rs.getInt("quantity"));
-                        history.setPrice(rs.getInt("price"));
+                        history.setId(rs.getString("history_Items_ID"));
+                        history.setProductId(rs.getString("quantity"));
+                        history.setHistoryId(rs.getString("price"));
+                        history.setQuantity(rs.getInt("history_ID"));
+                        history.setPrice(rs.getInt("prodcut_ID"));
                         
                     }
                 }
@@ -125,6 +125,7 @@ public class HistoryDAO implements CrudDAO{
 
    
     }
+    
 
     public Optional<History> findByUserId(String userId) {
         try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
@@ -132,6 +133,35 @@ public class HistoryDAO implements CrudDAO{
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, userId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        History history = new History();
+                        history.setId(rs.getString("history_ID"));
+                        history.setUserId(rs.getString("user_ID"));
+                        history.setTotalCost(rs.getFloat("total_Cost"));
+                        return Optional.of(history);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<History> findByUserHistoryId(String historyId) {
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "SELECT * FROM HISTORY WHERE history_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, historyId);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -175,5 +205,9 @@ public class HistoryDAO implements CrudDAO{
         throw new RuntimeException("Unable to load jdbc");
     }
     }
+
+
+  
+
 
 }

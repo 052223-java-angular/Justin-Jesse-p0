@@ -12,17 +12,15 @@ import java.util.Optional;
 public class HistoryService {
 
     private final HistoryDAO historyDao;
-    private final Session session; 
 
-    public HistoryService(HistoryDAO historyDao, Session session) {
+
+    public HistoryService(HistoryDAO historyDao) {
         this.historyDao = historyDao;
-        this.session = session;
     }
 
 
-    public void createOrder(ArrayList<CartItem> items, String userId)
-    {
-        Optional<History> history = historyDao.findByUserId(session.getId());
+    public void createOrder(ArrayList<CartItem> items, String userId) {
+        Optional<History> history = historyDao.findByUserId(userId);
 
         if (history.isEmpty()) {
             String historyId= UUID.randomUUID().toString();
@@ -50,5 +48,15 @@ public class HistoryService {
         }
         List<HistoryItem> History = historyDao.getAllHistoryById(userId);
         return History;
+    }
+    public boolean doesUserHaveHistory(String userID)
+    {
+        Optional<History> historyOptional = historyDao.findByUserId(userID);
+        return historyOptional.isPresent();
+    }
+    public void createHistory(String userId)
+    {
+        String historyId= UUID.randomUUID().toString();
+        historyDao.setHistory(historyId, userId, 0f);
     }
 }

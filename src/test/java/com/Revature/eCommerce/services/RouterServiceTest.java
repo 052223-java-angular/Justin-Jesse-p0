@@ -1,6 +1,7 @@
 package com.Revature.eCommerce.services;
 
 import com.Revature.eCommerce.models.Product;
+import com.Revature.eCommerce.models.History;
 import com.Revature.eCommerce.screens.*;
 import com.Revature.eCommerce.utils.Session;
 import junit.framework.TestCase;
@@ -36,10 +37,11 @@ public class RouterServiceTest extends TestCase {
     @Mock
     private ReviewsAndRatingsScreen reviewsAndRatingsScreen;
     private RouterService routerService;
+    private History history;
 
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        routerService = new RouterService(session, product);
+        routerService = new RouterService(session, product, history);
     }
 
     public void testNavigateToHome()
