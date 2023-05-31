@@ -1,10 +1,15 @@
 package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 import com.Revature.eCommerce.services.RouterService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+/**
+ * Home screen where users can login,register or exit application
+ */
 public class HomeScreen implements IScreen{
     private final RouterService router;
-
+    private static final Logger logger = LogManager.getLogger(HomeScreen.class);
 
 
     public HomeScreen(RouterService router) {
@@ -14,7 +19,7 @@ public class HomeScreen implements IScreen{
 	@Override
     public void start(Scanner scan) {
         String input = "";
-
+        logger.info("Navigated to home screen");
         exit: {
             while (true) {
                 clearScreen();
@@ -29,16 +34,20 @@ public class HomeScreen implements IScreen{
 
                 switch (input.toLowerCase()) {
                     case "1":
+                        logger.info("Navigating to login screen");
                         router.navigate("/login", scan, "");
                         break;
                     case "2":
+                        logger.info("Navigating to register screen");
                         router.navigate("/register", scan, "");
                         break;
                     case "x":
+                        logger.info("Exiting home screen");
                         System.out.println("\nGoodbye!");
                         break exit;
 
                     default:
+                        logger.warn("Invalid option");
                         clearScreen();
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");

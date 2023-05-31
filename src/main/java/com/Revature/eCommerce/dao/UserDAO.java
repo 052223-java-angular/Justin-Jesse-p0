@@ -116,33 +116,4 @@ public class UserDAO implements CrudDAO<User> {
         return null;
     }
 
-    // Will Delete used for testing the cart
-    public User checkUser(String username, String password)
-    { try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ps.setString(2, password);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new User(rs.getString("user_id"), rs.getString("username"),
-                    rs.getString("password"),rs.getString("role_id"));
-                }
-            }
-        }
-
-    } catch (SQLException e) {
-        throw new RuntimeException("Unable to connect to db");
-    } catch (IOException e) {
-        throw new RuntimeException("Cannot find application.properties");
-    } catch (ClassNotFoundException e) {
-        throw new RuntimeException("Unable to load jdbc");
-    }
-
-
-        return null;
-    }
-
 }

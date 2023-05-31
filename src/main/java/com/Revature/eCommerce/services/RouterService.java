@@ -9,22 +9,19 @@ import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.dao.CategoryDAO;
 import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
-import com.Revature.eCommerce.screens.HomeScreen;
-import com.Revature.eCommerce.screens.LoginScreen;
-import com.Revature.eCommerce.screens.MenuScreen;
-import com.Revature.eCommerce.screens.RegisterScreen;
-import com.Revature.eCommerce.screens.BrowseScreen;
-import com.Revature.eCommerce.screens.SearchScreen;
-import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
+import com.Revature.eCommerce.models.History;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RouterService {
     private Session session;
     private Product product;
-    public RouterService(Session session, Product product)
+    private History history;
+    public RouterService(Session session, Product product, History history)
     {
         this.session = session;
         this.product = product;
-
+        this.history = history;
     }
 
     public void navigate(String path, Scanner scan, String productId) {
@@ -39,7 +36,7 @@ public class RouterService {
                 break;
 
             case "/menu":
-                new MenuScreen(this, session).start(scan);
+                new MenuScreen(this, session,getHistoryService()).start(scan);
                 break;
 
             case "/register":
@@ -47,26 +44,27 @@ public class RouterService {
                 break;
 
             case "/browse":
-                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService()).start(scan);
+                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService(), getCartService()).start(scan);
                 break;
 
             case "/search":
-                new SearchScreen(this, session, getProductService(), getCategoryService()).start(scan);
+                new SearchScreen(this, session, getProductService(), getCategoryService(), getCartService()).start(scan);
                 break;
 
             case "/cart":
                 new CartScreen(getCartService(),getProductService(),getHistoryService(),this,session).start(scan);
                 break;
 
-            case "/payment":
-                break;
 
             case "/reviews":
                 new ReviewsAndRatingsScreen(this, getReviewsAndRatingsService(), productId, session).start(scan);
                 break;
+               
+            case "/history":
+                new HistoryScreen(this, session, getHistoryService()).start(scan);
+                break;
 
             default:
-            case "/history":
             break;
 
         }
@@ -86,7 +84,11 @@ public class RouterService {
     {
         return new CartService(new CartDAO());
     }
-    private HistoryService getHistoryService(){return new HistoryService(new HistoryDAO());}
+    private HistoryService getHistoryService() {
+        return new HistoryService(new HistoryDAO(), history);
+    }
+
+
     private ProductService getProductService(){
         return new ProductService(new ProductDAO());
     };

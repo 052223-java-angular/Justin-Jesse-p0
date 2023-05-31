@@ -16,5 +16,5 @@ public class History
 {
     private String id;
     private String userId;
-    private float totalCost;
+    private int totalCost;
 }
