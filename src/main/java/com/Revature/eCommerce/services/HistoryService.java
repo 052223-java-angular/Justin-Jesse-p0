@@ -20,7 +20,8 @@ public class HistoryService {
     }
 
 
-    public void createOrder(ArrayList<CartItem> items, String userId) {
+    public void createOrder(ArrayList<CartItem> items, String userId)
+    {
         Optional<History> history = historyDao.findByUserId(session.getId());
 
         if (history.isEmpty()) {

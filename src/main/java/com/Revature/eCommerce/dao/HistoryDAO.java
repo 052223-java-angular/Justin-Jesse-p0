@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.ArrayList;
 public class HistoryDAO implements CrudDAO{
 
-
-
     public void save(String historyItemId, CartItem item, String historyId)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "INSERT INTO history_items (history_items_id, quantity, price, history_id, product_id) VALUES (?, ?, ?, ?, ?)";

@@ -7,6 +7,9 @@ import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.ReviewsAndRatingsService;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.utils.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
 public class ReviewsAndRatingsScreen implements IScreen {
@@ -14,6 +17,7 @@ public class ReviewsAndRatingsScreen implements IScreen {
     private final String productId;
     private final RouterService router;
     private final Session session;
+    private final Logger logger = LogManager.getLogger(ReviewsAndRatingsScreen.class);
     
 
     public ReviewsAndRatingsScreen(RouterService router, ReviewsAndRatingsService reviewsAndRatingsService, String productId, Session session) {
@@ -23,10 +27,14 @@ public class ReviewsAndRatingsScreen implements IScreen {
         this.session = session;
     }
 
+    /**
+     * Lets user Leave a review
+     * @param scan - user input
+     */
     @Override
     public void start(Scanner scan) {
         String input = "";
-
+        logger.info("Navigated to Reviews Screen");
         exit: {
             while (true) {
                 clearScreen();
@@ -39,14 +47,17 @@ public class ReviewsAndRatingsScreen implements IScreen {
 
                 input = scan.nextLine().trim();
                 if (input.equalsIgnoreCase("A")) {
+                    logger.info("User navigated to leave a review");
                     clearScreen();
                     leaveReview(scan);
                 } else if (input.equalsIgnoreCase("X")) {
+                    logger.info("Navigating to browse screen");
                     clearScreen();
                     router.navigate("/browse", scan, "");
                     break exit;
                 } else {
                     clearScreen();
+                    logger.warn("Invalid option for reviews user input: {}", input);
                     System.out.println("Invalid option!");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
@@ -60,7 +71,11 @@ public class ReviewsAndRatingsScreen implements IScreen {
         System.out.flush();
     }
 
+    /**
+     * Display reviews for a product
+     */
     private void displayReviews() {
+        logger.info("Displaying reviews for product");
         List<ReviewsAndRatings> reviews = reviewsAndRatingsService.findReviewsByProducts(productId);
         Scanner scan = new Scanner(System.in);
         System.out.println("Reviews and Ratings:");
@@ -83,6 +98,10 @@ public class ReviewsAndRatingsScreen implements IScreen {
 
     }
 
+    /**
+     * User can leave a review for a product
+     * @param scan - user input
+     */
     private void leaveReview(Scanner scan) {
         System.out.println("Enter your review and rating (out of 5):");
         System.out.print("Review: ");

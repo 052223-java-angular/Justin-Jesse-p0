@@ -2,7 +2,6 @@ package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 
 import com.Revature.eCommerce.dao.CartDAO;
-import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.services.CartService;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.services.RouterService;
@@ -23,11 +22,11 @@ public class MenuScreen implements IScreen {
 
     /**
      * Displays menu for the user to select for different features
-     * @param scan
+     * @param scan - takes in user input
      */
     @Override
     public void start(Scanner scan) {
-        doesUserHaveCart(session.getId());
+        doesUserHaveCart(session.getId()); // verifies if user has a cart
         logger.info("Navigated to Menu");
         String input = "";
 
@@ -47,15 +46,19 @@ public class MenuScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                     case "1":
+                        logger.info("Navigating to browse screen");
                         router.navigate("/browse", scan, "");
                         break exit;
                     case "2":
+                        logger.info("Navigating to search products screen");
                         router.navigate("/search", scan, "");
                         break exit;
                     case "3":
+                        logger.info("Navigating to cart screen");
                         router.navigate("/cart", scan, "");
                         break exit;
                     case "4":
+                        logger.info("Navigating to history screen");
                          router.navigate("/history", scan, "");
                         break exit;
                     case "x":
