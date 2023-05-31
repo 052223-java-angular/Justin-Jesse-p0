@@ -9,8 +9,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ReviewsAndRatingsServiceTest extends TestCase
 {
@@ -26,13 +25,13 @@ public class ReviewsAndRatingsServiceTest extends TestCase
 
     public void testFindReviewsByProducts() {
         String productId = "P1";
-        List<ReviewsAndRatings> expectedReviews = new ArrayList<>();
-        expectedReviews.add(new ReviewsAndRatings("R1", "U1", "P1", 4, "Great product"));
-        when(reviewsAndRatingsDAO.findReviewsByProduct(productId)).thenReturn(expectedReviews);
+        List<ReviewsAndRatings> expected = new ArrayList<>();
+        expected.add(new ReviewsAndRatings("R1", "U1", "P1", 4, "Great product"));
+        when(reviewsAndRatingsDAO.findReviewsByProduct(productId)).thenReturn(expected);
 
-        List<ReviewsAndRatings> actualReviews = reviewsAndRatingsService.findReviewsByProducts(productId);
+        List<ReviewsAndRatings> actual = reviewsAndRatingsService.findReviewsByProducts(productId);
 
-        assertEquals(expectedReviews, actualReviews);
+        assertEquals(expected, actual);
         verify(reviewsAndRatingsDAO).findReviewsByProduct(productId);
     }
 
@@ -43,8 +42,10 @@ public class ReviewsAndRatingsServiceTest extends TestCase
         int rating = 4;
         String review = "Great product";
 
-        reviewsAndRatingsService.LeaveReview(reviewId, userId, productId, rating, review);
+        reviewsAndRatingsService.LeaveReview(reviewId,userId,productId,rating,review);
+        List<ReviewsAndRatings> expected = reviewsAndRatingsService.findReviewsByProducts(productId);
 
         verify(reviewsAndRatingsDAO).LeaveReview(reviewId, userId, productId, rating, review);
+        //assertEquals(reviewId, expected.get(0).getReview_id());
     }
 }
