@@ -90,6 +90,7 @@ public class CartScreen implements IScreen
 
 
         public void displayCart() {
+            int finalAmount = 0;
             items = cartService.getCartItems(cart.get().getId());
             if (items.isEmpty()){
                 System.out.println("\nThere is nothing in your cart!");
@@ -106,10 +107,13 @@ public class CartScreen implements IScreen
                     System.out.println("   Price Per Item: " + product.getPricing());
                     System.out.println("   Total: " + item.getPrice());
                     System.out.println("---------------------------");
+                    amountSpent = item.getQuantity() * item.getPrice();
+                    finalAmount = amountSpent + finalAmount;
                 }
-
-                amountSpent = cartService.getAmountSpent(items);
-                System.out.println("Amount spent: " + amountSpent);
+                
+                
+                
+                System.out.println("Amount spent: " + finalAmount);
                 System.out.println("---------------------------");
             }
         }

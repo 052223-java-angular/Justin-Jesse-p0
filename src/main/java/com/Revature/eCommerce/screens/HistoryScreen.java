@@ -134,7 +134,7 @@ public class HistoryScreen implements IScreen {
             }
         }
             catch(IndexOutOfBoundsException e){
-                System.out.println("No Purchase History");
+                System.out.println("No Purchase History!\n");
                 System.out.println("Press Anything To Return to Menu");
                 scan.nextLine();
                 router.navigate("/menu", scan, "");
