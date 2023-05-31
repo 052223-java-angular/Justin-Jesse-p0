@@ -33,7 +33,7 @@ public class HistoryScreen implements IScreen {
 
     /**
      * Start method of the history screen to display previous orders from user
-     * @param scan
+     * @param scan-user input
      */
     @Override
     public void start(Scanner scan) {
@@ -63,7 +63,7 @@ public class HistoryScreen implements IScreen {
                     case "5":
                         break exit;
 
-                    case "R":
+                    case "r":
                         clearScreen();
                         router.navigate("/reviews", scan, "");
                             break exit;
