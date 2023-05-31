@@ -57,34 +57,6 @@ public class ProductDAO implements CrudDAO<Product> {
 
         return null;
     }
-    public Product findByName(String name)
-    {
-        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-            String sql = "SELECT * FROM product WHERE product_name = ?";
-
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, name);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return new Product(rs.getString("product_id"), rs.getString("product_name"),
-                                rs.getString("category_id"),rs.getInt("pricing"), rs.getString("description"));
-                    }
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
-        }
-
-
-        return null;
-    }
-
 
     @Override
     public List<Product> findAll() {

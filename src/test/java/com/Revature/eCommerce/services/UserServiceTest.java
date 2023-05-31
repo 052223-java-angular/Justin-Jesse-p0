@@ -10,10 +10,12 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
-    public class UserServiceTest extends TestCase {
+public class UserServiceTest extends TestCase {
 
     private UserService userService;
     @Mock
@@ -51,7 +53,18 @@ import static org.junit.Assert.*;
         assertEquals(username, result.getUsername());
     }
 
-    public void testCheckUser() {
+    public void testCheckUser()
+    {
+        /*
+        String username = "testUser";
+        String password = "password";
+        Role role = new Role("cd7a196a-b4a1-4f2a-a6fc-902cc887ab71", "USER");
+        User user = new User(username, BCrypt.hashpw(password, BCrypt.gensalt()), role.getId());
+
+        when(roleService.findByName("USER")).thenReturn(role);
+        doNothing().when(userDao).save(any(User.class));
+        User result = userService.register(username, password);
+        when(userDao.checkUser(user)).thenReturn(Optional.of(new User()));*/
     }
 
     public void testIsValidUsername()
@@ -63,12 +76,33 @@ import static org.junit.Assert.*;
         assertFalse(userService.isValidUsername(invalidUsername));
     }
 
-    public void testIsUniqueUsername() {
+    public void testIsUniqueUsername()
+    {
+        String existingUsername = "existingUser";
+        String newUsername = "newUser";
+
+        when(userDao.findByUsername(existingUsername)).thenReturn(Optional.of(new User()));
+        when(userDao.findByUsername(newUsername)).thenReturn(Optional.empty());
+
+        assertFalse(userService.isUniqueUsername(existingUsername));
+        assertTrue(userService.isUniqueUsername(newUsername));
     }
 
-    public void testIsValidPassword() {
+    public void testIsValidPassword()
+    {
+        String validPassword = "Revature1";
+        String invalidPassword = "";
+
+        assertTrue(userService.isValidPassword(validPassword));
+        assertFalse(userService.isValidPassword(invalidPassword));
     }
 
     public void testIsSamePassword() {
+        String password = "password1";
+        String samePassword = "password1";
+        String diffPassword = "";
+
+        assertTrue(userService.isSamePassword(password, samePassword));
+        assertFalse(userService.isSamePassword(password, diffPassword));
     }
 }

@@ -9,15 +9,16 @@ import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.dao.CategoryDAO;
 import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
-
+import com.Revature.eCommerce.models.History;
 public class RouterService {
     private Session session;
     private Product product;
-    public RouterService(Session session, Product product)
+    private History history;
+    public RouterService(Session session, Product product, History history)
     {
         this.session = session;
         this.product = product;
-
+        this.history = history;
     }
 
     public void navigate(String path, Scanner scan, String productId) {
@@ -32,7 +33,7 @@ public class RouterService {
                 break;
 
             case "/menu":
-                new MenuScreen(this, session).start(scan);
+                new MenuScreen(this, session,getHistoryService()).start(scan);
                 break;
 
             case "/register":
@@ -40,11 +41,11 @@ public class RouterService {
                 break;
 
             case "/browse":
-                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService()).start(scan);
+                new BrowseScreen(this, session, product, getProductService(), getReviewsAndRatingsService(), getCartService()).start(scan);
                 break;
 
             case "/search":
-                new SearchScreen(this, session, getProductService(), getCategoryService()).start(scan);
+                new SearchScreen(this, session, getProductService(), getCategoryService(), getCartService()).start(scan);
                 break;
 
             case "/cart":
@@ -80,7 +81,11 @@ public class RouterService {
     {
         return new CartService(new CartDAO());
     }
-    private HistoryService getHistoryService(){return new HistoryService(new HistoryDAO());}
+    private HistoryService getHistoryService() {
+        return new HistoryService(new HistoryDAO(), history);
+    }
+
+
     private ProductService getProductService(){
         return new ProductService(new ProductDAO());
     };

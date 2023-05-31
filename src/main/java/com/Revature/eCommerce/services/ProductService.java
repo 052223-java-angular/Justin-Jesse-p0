@@ -40,11 +40,6 @@ import com.Revature.eCommerce.models.Product;
         return products;
 
     }
-     public Product findByName(String name)
-    {
-       return productDao.findByName(name);
-
-    }
     public Product getProduct(String productID)
     {
         return productDao.findById(productID);

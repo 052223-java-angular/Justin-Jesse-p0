@@ -1,4 +1,5 @@
 package com.Revature.eCommerce.dao;
+import java.util.Optional;
 
 import com.Revature.eCommerce.models.CartItem;
 import com.Revature.eCommerce.models.History;
@@ -17,18 +18,19 @@ public class HistoryDAO implements CrudDAO{
 
 
 
-    public void save(String historyItemId,CartItem item)
+    public void save(String historyItemId, CartItem item, String historyId)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
-        String sql = "INSERT INTO history_items (history_items_id, quantity, price, history_id, product_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO HISTORY_ITEMS (history_Items_ID, quantity, price, history_ID, product_ID) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1,historyItemId);
             ps.setInt(2, item.getQuantity());
             ps.setInt(3, item.getPrice());
-            ps.setString(4, "H1");// will change, just for testing
+            ps.setString(4, historyId);// will change, just for testing
             ps.setString(5, item.getProductId());
             ps.executeUpdate();
         }
+      
 
     } catch (SQLException e) {
         throw new RuntimeException("Unable to connect to db");
@@ -92,4 +94,126 @@ public class HistoryDAO implements CrudDAO{
 
         return historyList;
     }
+
+    public List<HistoryItem> getAllHistoryById(String historyID) {
+        List<HistoryItem> historyList = new ArrayList<>();
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "SELECT * FROM HISTORY_ITEMS WHERE history_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, historyID);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        HistoryItem history = new HistoryItem();
+                        history.setId(rs.getString("history_Items_ID"));
+                        history.setQuantity(rs.getInt("quantity"));
+                        history.setPrice(rs.getInt("price"));
+                        history.setHistoryId(rs.getString("history_ID"));
+                        history.setProductId(rs.getString("product_ID"));
+                        historyList.add(history);
+                    }
+                }
+                return historyList;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
+   
+    }
+    
+
+    public Optional<History> findByUserId(String userId) {
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "SELECT * FROM HISTORY WHERE user_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, userId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        History history = new History();
+                        history.setId(rs.getString("history_ID"));
+                        history.setUserId(rs.getString("user_ID"));
+                        history.setTotalCost(rs.getInt("total_Cost"));
+                        return Optional.of(history);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<History> findByUserHistoryId(String historyId) {
+        try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+            String sql = "SELECT * FROM HISTORY WHERE history_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, historyId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        History history = new History();
+                        history.setId(rs.getString("history_ID"));
+                        history.setUserId(rs.getString("user_ID"));
+                        history.setTotalCost(rs.getInt("total_Cost"));
+                        return Optional.of(history);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
+        return Optional.empty();
+    }
+
+    public void setHistory(String historyId, String userId, int totalAmount)
+    {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
+        String sql = "INSERT INTO HISTORY (history_ID, user_ID, total_Cost) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1,historyId);
+            ps.setString(2, userId);
+            ps.setInt(3, totalAmount);
+            ps.executeUpdate();
+  
+        }
+        
+      
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Unable to connect to db");
+    } catch (IOException e) {
+        throw new RuntimeException("Cannot find application.properties");
+    } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Unable to load jdbc");
+    }
+
+    
+    }
+
+
+  
+
+
 }
