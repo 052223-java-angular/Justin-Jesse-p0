@@ -6,10 +6,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * This class connects the program to a data base to manipulate data in the database
+ */
 public class ConnectionFaction {
     private static ConnectionFaction instance;
     private Connection connection;
 
+    /**
+     * Loads the driver manager with content from the app.prop file
+     * @throws IOException - io exception
+     * @throws SQLException - SQL Exception
+     * @throws ClassNotFoundException - Class not found exception
+     */
     private ConnectionFaction() throws IOException, SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
         Properties props = getProperties();
@@ -17,7 +26,13 @@ public class ConnectionFaction {
                 props.getProperty("password"));
     }
 
-//Method
+    /**
+     * Creates an instance of the connection Faction
+     * @return - instance
+     * @throws ClassNotFoundException - Class not found exception
+     * @throws IOException - io exception
+     * @throws SQLException - SQL Exception
+     */
     public static ConnectionFaction getInstance() throws ClassNotFoundException, IOException, SQLException {
         if (instance == null || instance.getConnection().isClosed()) {
             instance = new ConnectionFaction();
@@ -29,7 +44,7 @@ public class ConnectionFaction {
         return connection;
     }
 
-// Help Methods
+// Help Methods to get read the contents of the application file to connect the database
 
     private Properties getProperties() throws IOException {
         Properties props = new Properties();

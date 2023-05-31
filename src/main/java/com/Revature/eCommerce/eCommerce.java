@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * This is the eCommerce class where the main method starts the application
+ */
 public class eCommerce {
 
     private static final Logger logger = LogManager.getLogger((eCommerce.class));
@@ -17,17 +20,16 @@ public class eCommerce {
   /**
    * Main method for the ecommerce class to start the program
    * @param args
-   * @throws ClassNotFoundException
-   * @throws IOException
-   * @throws SQLException
+   *
    */
-  public static void main(String args[]) throws ClassNotFoundException, IOException, SQLException
+  public static void main(String args[])
   {
     logger.info("--------------------Start Application--------------------");
     Scanner scan = new Scanner(System.in);
-    RouterService router = new RouterService(new Session(), new Product(), new History());
+    RouterService router = new RouterService(new Session(), new Product(), new History());//Instantiates the router to direct users to different screens
     router.navigate("/home", scan, "");
-    logger.info("--------------------End Application--------------------");
+    logger.info("--------------------Ended Application--------------------");
     scan.close();
+
   }
 }
