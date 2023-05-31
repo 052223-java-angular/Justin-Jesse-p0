@@ -85,9 +85,11 @@ public class ReviewsAndRatingsScreen implements IScreen {
         System.out.println("-----------------------------");
 
         if (reviews.isEmpty()) {
+            logger.warn("No reviews to display for product");
             System.out.println("No reviews available for this product.");
         } else {
-            for (ReviewsAndRatings review : reviews) {
+            for (ReviewsAndRatings review : reviews) {//Displays reviews from any user
+                logger.info("Displayed review for user");
                 System.out.println("User ID: " + review.getUser_id());
                 System.out.println("Rating: " + review.getRating());
                 System.out.println("Review: " + review.getReview());
@@ -103,6 +105,7 @@ public class ReviewsAndRatingsScreen implements IScreen {
      * @param scan - user input
      */
     private void leaveReview(Scanner scan) {
+        logger.info("Starting review and rating process");
         System.out.println("Enter your review and rating (out of 5):");
         System.out.print("Review: ");
         String review = scan.nextLine();
@@ -114,13 +117,19 @@ public class ReviewsAndRatingsScreen implements IScreen {
         String reviewId = getReviewID();
         clearScreen();
         System.out.println(reviewId + "\n" + userId + "\n" + productId + "\n" + rating + "\n" + review);
-        reviewsAndRatingsService.LeaveReview(reviewId, userId, productId, rating, review);
+        reviewsAndRatingsService.LeaveReview(reviewId, userId, productId, rating, review);//inserts the review to DB
         
         System.out.println("Review submitted successfully!");
         System.out.print("\nPress anything to return to Browse...");
+        logger.info("User successfully posted review");
         scan.nextLine();
         router.navigate("/browse", scan, "");
     }
+
+    /**
+     * Helper class
+     * @return - generates a random id
+     */
     public String getReviewID() {
         String id = UUID.randomUUID().toString();
         return id;

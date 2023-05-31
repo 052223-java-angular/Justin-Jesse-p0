@@ -4,6 +4,9 @@ import com.Revature.eCommerce.services.RouterService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Home screen where users can login,register or exit application
+ */
 public class HomeScreen implements IScreen{
     private final RouterService router;
     private static final Logger logger = LogManager.getLogger(HomeScreen.class);

@@ -69,11 +69,14 @@ public class HistoryScreen implements IScreen {
                             break exit;
                     case "x":
                     clearScreen();
+                    logger.info("Navigating to menu");
                         break exit;
                     default:
                         clearScreen();
+                        logger.warn("Invalid input for user");
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
+                        logger.info("restarting order history");
                         scan.nextLine();
                         break;
                 }

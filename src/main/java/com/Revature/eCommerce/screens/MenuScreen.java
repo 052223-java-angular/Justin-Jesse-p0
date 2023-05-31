@@ -13,10 +13,12 @@ import com.Revature.eCommerce.services.RouterService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Menu screen that lets users navigate to different screens
+ */
 public class MenuScreen implements IScreen {
     private static Logger logger = LogManager.getLogger(MenuScreen.class);
     private Session session;
-   // private History history;
     private HistoryService historyService;
     private final RouterService router;
 
