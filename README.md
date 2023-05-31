@@ -3,12 +3,29 @@
 This is a Java-based command-line interface (CLI) eCommerce application. The application was primarily built using Java and utilized a PostgreSQL database to store product and user information.
 Within the app users can access features such as viewing products, adding to cart and viewing order history. Check out all the [features](#features).
 ## Table of Contents
-
+- [MVP](#mvp)
 - [Built with](#built-with)
 - [Installation](#installation)
 - [Dependencies](#dependencies)
 - [Tech Stacks](#tech-stacks)
 - [Features](#features)
+
+## MVP (Minimum Viable Product)
+
+- User registration and login
+- Browsing and searching for products
+- Adding products to a shopping cart
+- Modifying the shopping cart
+- Secure payment process
+- Order history
+- Product rating and reviewing
+
+## Stretch Goals
+
+- Implementing a recommendation system based on user's previous purchases
+- Adding an admin role that can add, remove, or modify products
+- Implementing promotional codes and discounts
+- Adding a wish list feature
 ## Built with
 
 - **Java**: The main programming language used for building the application.
