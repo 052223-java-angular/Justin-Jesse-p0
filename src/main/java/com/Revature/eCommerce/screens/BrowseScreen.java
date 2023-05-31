@@ -9,16 +9,18 @@ import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.CartService;
 import com.Revature.eCommerce.services.ReviewsAndRatingsService;
 import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
-//import com.Revature.eCommerce.dao.ProductDAO;
-//@AllArgsConstructor
-//@NoArgsConstructor
+
 public class BrowseScreen implements IScreen {
+    private static Logger logger = LogManager.getLogger(BrowseScreen.class);
+
     private Session session;
-    //private Product product;
     private final RouterService router;
     private final ProductService productService;
     private final ReviewsAndRatingsService reviewsAndRatingsService;
@@ -26,42 +28,40 @@ public class BrowseScreen implements IScreen {
     
     public BrowseScreen(RouterService router, Session session, Product product, ProductService productService, ReviewsAndRatingsService reviewsAndRatingsService, CartService cartService)
     {
-        this.router = router; 
+        this.router = router;
         this.session = session;
-        //this.product = product;
         this.productService = productService;
         this.reviewsAndRatingsService = reviewsAndRatingsService;
         this.cartService = cartService;
     }
 
+    /**
+     * Starts the browsing screen
+     * @param scan-user input
+     */
     @Override
     public void start(Scanner scan) {
+        logger.info("Navigated to Browser screen");
         String input = "";
 
         exit: {
             while (true) {
                 clearScreen();
-              
+                logger.info("Displaying Products");
                 displayProducts();
+
 
 
                 input = scan.nextLine();
 
                 switch (input.toLowerCase()) {
                     case "":
+                        logger.info("Navigating to menu");
                     router.navigate("/menu", scan, "");
                         break exit;
-                    case "2":
-                        break exit;
-                    case "3":
-                        break exit;
-                    case "4":
-                        break exit;
-                    case "5":
-                        break exit;
-
                     case "R":
                         clearScreen();
+                        logger.info("Navigating to reviews");
                         router.navigate("/reviews", scan, "");
                             break exit;
                     case "x":
@@ -69,6 +69,7 @@ public class BrowseScreen implements IScreen {
                         break exit;
                     default:
                         clearScreen();
+                        logger.warn("Invlaid input from user: {}", input);
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
@@ -83,7 +84,12 @@ public class BrowseScreen implements IScreen {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+    /**
+     * Displays the product in the store
+     */
     public void displayProducts() {
+        logger.info("Displayed products");
         List<Product> productList = productService.getAllProducts();
         int listSize = productList.size();
         boolean exit = false; 
@@ -112,7 +118,8 @@ public class BrowseScreen implements IScreen {
             String input = scan.nextLine().trim();
             if (input.equalsIgnoreCase("R")) {
                 clearScreen();
-                exit = true;   
+                exit = true;
+                logger.info("Navigating to reviews");
                 router.navigate("/reviews", scan, product.getProductId());
  
             }
@@ -120,7 +127,8 @@ public class BrowseScreen implements IScreen {
 
             if (input.equalsIgnoreCase("A")) {
                 clearScreen();
-                exit = true;   
+                exit = true;
+                logger.info("User added to cart: {}", product.getProductName());
                 addToCart(product);
  
             }
@@ -128,13 +136,16 @@ public class BrowseScreen implements IScreen {
             if (input.equalsIgnoreCase("X")) {
                 clearScreen();
                 exit = true;
+                logger.info("Navigating to Menu");
                 router.navigate("/menu", scan, "");
             } 
              else {
                 clearScreen();
                 if (input.equalsIgnoreCase("B")) {
+                    logger.info("User viewing previous product");
                     index--;
                 } else {
+                    logger.info("User viewing next product");
                     index++;
                 }
                 if (index >= listSize) {
@@ -147,7 +158,11 @@ public class BrowseScreen implements IScreen {
         }
     }
 
-private void addToCart(Product product) {
+    /**
+     * Adds a product to a users cart
+     * @param product - the product to add
+     */
+    private void addToCart(Product product) {
     Scanner scan = new Scanner(System.in);
 
     Optional<Cart> optionalCart = cartService.getCart(session.getId());
@@ -167,17 +182,20 @@ private void addToCart(Product product) {
         CartItem existingItem = optionalCartItem.get();
         int newQuantity = existingItem.getQuantity() + 1;
         cartService.changeItemQuantity(product, newQuantity, cart.getId());
+        logger.info("User added another product for: {}", product.getProductName());
         System.out.println("Quantity updated in the cart!");
     } else {
 
         CartItem newItem = new CartItem(UUID.randomUUID().toString(), product.getProductId(),
                 cart.getId(), 1, product.getPricing());
         cartService.setCart(product, newItem, cart);
+        logger.info("User added to new item to cart: {}", product);
         System.out.println("Item added to the cart!");
     }
 
     System.out.print("\nPress enter to return to browse screen");
     scan.nextLine();
+    logger.info("Navigating to browse screen");
     router.navigate("/browse", scan, "");
 }
 
