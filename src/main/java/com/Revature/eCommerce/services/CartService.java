@@ -54,9 +54,9 @@ public class CartService {
         cartDAO.setCart(product, item, cart);
     }
 
-    public void deleteCart(String id)
+    public void deleteCart(String string)
     {
-        cartDAO.deleteCart(id);
+        cartDAO.deleteCart(string);
     }
     public void newCart(String id)
     {

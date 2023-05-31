@@ -2,8 +2,11 @@ package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 
 import com.Revature.eCommerce.dao.CartDAO;
+
+import com.Revature.eCommerce.dao.HistoryDAO;
 import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.services.CartService;
+import com.Revature.eCommerce.services.HistoryService;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.services.RouterService;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +31,7 @@ public class MenuScreen implements IScreen {
     @Override
     public void start(Scanner scan) {
         doesUserHaveCart(session.getId());
+        doesUserHaveHistory(session.getId());
         logger.info("Navigated to Menu");
         String input = "";
 
@@ -87,6 +91,17 @@ public class MenuScreen implements IScreen {
         }
         else{
             new CartService(new CartDAO()).createCart(userId);
+        }
+    }
+
+    private void doesUserHaveHistory(String userId)
+    {
+        if (new HistoryService(new HistoryDAO()).doesUserHaveHistory(userId))
+        {
+
+        }
+        else{
+            new HistoryService(new HistoryDAO()).createHistory(userId);;
         }
     }
 }

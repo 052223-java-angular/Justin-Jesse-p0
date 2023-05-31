@@ -9,15 +9,16 @@ import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.dao.CategoryDAO;
 import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
-
+import com.Revature.eCommerce.models.History;
 public class RouterService {
     private Session session;
     private Product product;
-    public RouterService(Session session, Product product)
+    private History history;
+    public RouterService(Session session, Product product, History history)
     {
         this.session = session;
         this.product = product;
-
+        this.history = history;
     }
 
     public void navigate(String path, Scanner scan, String productId) {
@@ -57,7 +58,7 @@ public class RouterService {
                 break;
                
             case "/history":
-                new HistoryScreen(this, session, getHistoryService()).start(scan);
+                new HistoryScreen(this, session, getHistoryService(), history).start(scan);
                 break;
 
             default:
@@ -81,8 +82,10 @@ public class RouterService {
         return new CartService(new CartDAO());
     }
     private HistoryService getHistoryService() {
-        return new HistoryService(new HistoryDAO(), session);
+        return new HistoryService(new HistoryDAO());
     }
+
+
     private ProductService getProductService(){
         return new ProductService(new ProductDAO());
     };

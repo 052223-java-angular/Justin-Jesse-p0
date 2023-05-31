@@ -2,14 +2,14 @@ package com.Revature.eCommerce.screens;
 import java.util.Scanner;
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.Product;
-import com.Revature.eCommerce.models.Product;
+import com.Revature.eCommerce.models.History;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.HistoryService;
 import com.Revature.eCommerce.models.HistoryItem;
 import com.Revature.eCommerce.services.ReviewsAndRatingsService;
 import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
-
+import java.util.Optional;
 import java.util.List;
 //import com.Revature.eCommerce.dao.ProductDAO;
 //@AllArgsConstructor
@@ -19,14 +19,17 @@ public class HistoryScreen implements IScreen {
     //private Product product;
     private final RouterService router;
     private final HistoryService historyService;
+    private final History history;
+
  
     
-    public HistoryScreen(RouterService router, Session session, HistoryService historyService)
+    public HistoryScreen(RouterService router, Session session, HistoryService historyService, History history)
     {
         this.router = router; 
         this.session = session;
         //this.product = product;
         this.historyService = historyService;
+        this.history = history;
 
     }
 
@@ -80,19 +83,19 @@ public class HistoryScreen implements IScreen {
         System.out.flush();
     }
     public void displayOrders() {
-        List<HistoryItem> historyList = historyService.getAllHistoryById(session.getId());
+        List<HistoryItem> historyList = historyService.getAllHistoryById(history.getId());
         int listSize = historyList.size();
         boolean exit = false; 
         int index = 0;
         Scanner scan = new Scanner(System.in);
-    
+        
         while (!exit) {
             HistoryItem history = historyList.get(index);
             //ProductService product = product.getProduct(product.getProduct(history.getProductId()));
             System.out.println("History Item Purchases");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
-            System.out.println("History ID:" + history.getHistoryId());
+            //System.out.println("History ID:" + history.getHistoryId());
             System.out.println("Product ID:: " + history.getProductId());
             System.out.println("Pricing: $" + history.getPrice());
             System.out.println("Quantity: " + history.getQuantity());
