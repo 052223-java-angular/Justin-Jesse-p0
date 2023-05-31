@@ -107,11 +107,11 @@ public class HistoryDAO implements CrudDAO{
                     if (rs.next()) {
                         HistoryItem history = new HistoryItem();
                         history.setId(rs.getString("history_Items_ID"));
-                        history.setProductId(rs.getString("quantity"));
-                        history.setHistoryId(rs.getString("price"));
-                        history.setQuantity(rs.getInt("history_ID"));
-                        history.setPrice(rs.getInt("prodcut_ID"));
-                        
+                        history.setQuantity(rs.getInt("quantity"));
+                        history.setPrice(rs.getInt("price"));
+                        history.setHistoryId(rs.getString("history_ID"));
+                        history.setProductId(rs.getString("product_ID"));
+                        historyList.add(history);
                     }
                 }
                 return historyList;
@@ -141,7 +141,7 @@ public class HistoryDAO implements CrudDAO{
                         History history = new History();
                         history.setId(rs.getString("history_ID"));
                         history.setUserId(rs.getString("user_ID"));
-                        history.setTotalCost(rs.getFloat("total_Cost"));
+                        history.setTotalCost(rs.getInt("total_Cost"));
                         return Optional.of(history);
                     }
                 }
@@ -170,7 +170,7 @@ public class HistoryDAO implements CrudDAO{
                         History history = new History();
                         history.setId(rs.getString("history_ID"));
                         history.setUserId(rs.getString("user_ID"));
-                        history.setTotalCost(rs.getFloat("total_Cost"));
+                        history.setTotalCost(rs.getInt("total_Cost"));
                         return Optional.of(history);
                     }
                 }
@@ -187,16 +187,18 @@ public class HistoryDAO implements CrudDAO{
         return Optional.empty();
     }
 
-    public void setHistory(String historyId, String userId, Float totalAmount)
+    public void setHistory(String historyId, String userId, int totalAmount)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "INSERT INTO HISTORY (history_ID, user_ID, total_Cost) VALUES (?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1,historyId);
             ps.setString(2, userId);
-            ps.setFloat(3, totalAmount);
+            ps.setInt(3, totalAmount);
+            ps.executeUpdate();
   
         }
+        
       
 
     } catch (SQLException e) {
@@ -206,6 +208,8 @@ public class HistoryDAO implements CrudDAO{
     } catch (ClassNotFoundException e) {
         throw new RuntimeException("Unable to load jdbc");
     }
+
+    
     }
 
 

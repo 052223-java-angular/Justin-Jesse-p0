@@ -19,18 +19,18 @@ public class HistoryScreen implements IScreen {
     //private Product product;
     private final RouterService router;
     private final HistoryService historyService;
-    private final History history;
-
- 
+    //private final History history;
+    Optional<History> history;
     
-    public HistoryScreen(RouterService router, Session session, HistoryService historyService, History history)
+    
+    public HistoryScreen(RouterService router, Session session, HistoryService historyService)
     {
         this.router = router; 
         this.session = session;
         //this.product = product;
         this.historyService = historyService;
-        this.history = history;
-
+        //this.history = history;
+        history = historyService.findByUserId(session.getId());
     }
 
     @Override
@@ -83,14 +83,18 @@ public class HistoryScreen implements IScreen {
         System.out.flush();
     }
     public void displayOrders() {
-        List<HistoryItem> historyList = historyService.getAllHistoryById(history.getId());
+
+        List<HistoryItem> historyList = historyService.getAllHistoryById(history.get().getId());
         int listSize = historyList.size();
         boolean exit = false; 
         int index = 0;
         Scanner scan = new Scanner(System.in);
         
         while (!exit) {
+            try{
             HistoryItem history = historyList.get(index);
+            
+     
             //ProductService product = product.getProduct(product.getProduct(history.getProductId()));
             System.out.println("History Item Purchases");
             System.out.println("-----------------------------");
@@ -127,6 +131,14 @@ public class HistoryScreen implements IScreen {
                 if (index < 0) {
                     index = listSize - 1;
                 }
+            }
+        }
+            catch(IndexOutOfBoundsException e){
+                System.out.println("No Purchase History");
+                System.out.println("Press Anything To Return to Menu");
+                scan.nextLine();
+                router.navigate("/menu", scan, "");
+
             }
         }
     }

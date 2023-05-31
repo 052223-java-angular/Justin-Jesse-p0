@@ -12,25 +12,22 @@ import java.util.Optional;
 public class HistoryService {
 
     private final HistoryDAO historyDao;
+    private final History history;
 
-
-    public HistoryService(HistoryDAO historyDao) {
+    public HistoryService(HistoryDAO historyDao, History history) {
         this.historyDao = historyDao;
+        this.history = history;
     }
 
 
-    public void createOrder(ArrayList<CartItem> items, String userId) {
-        Optional<History> history = historyDao.findByUserId(userId);
+    public void createOrder(ArrayList<CartItem> items, String historyId) {
 
-        if (history.isEmpty()) {
-            String historyId= UUID.randomUUID().toString();
-        historyDao.setHistory(historyId, userId, 0f);
 
-        }
+
         for (CartItem item : items)
         {
             String historyItemId = UUID.randomUUID().toString();
-            historyDao.save(historyItemId, item, userId);
+            historyDao.save(historyItemId, item, historyId);
         }
 
     }
@@ -39,14 +36,8 @@ public class HistoryService {
         return history;
     }
 
-    public List<HistoryItem> getAllHistoryById(String userId){
-        Optional<History> history = historyDao.findByUserId(userId);
-        if (history.isEmpty()) {
-            String historyId= UUID.randomUUID().toString();
-        historyDao.setHistory(historyId, userId, 0f);
-
-        }
-        List<HistoryItem> History = historyDao.getAllHistoryById(userId);
+    public List<HistoryItem> getAllHistoryById(String historyId){
+        List<HistoryItem> History = historyDao.getAllHistoryById(historyId);
         return History;
     }
     public boolean doesUserHaveHistory(String userID)
@@ -54,9 +45,12 @@ public class HistoryService {
         Optional<History> historyOptional = historyDao.findByUserId(userID);
         return historyOptional.isPresent();
     }
-    public void createHistory(String userId)
+    public void createHistory(String userId, String historyId, int total_Amount)
     {
-        String historyId= UUID.randomUUID().toString();
-        historyDao.setHistory(historyId, userId, 0f);
+        historyDao.setHistory(historyId, userId, total_Amount);
+    }
+
+    public Optional<History> findByUserId(String userId){
+        return historyDao.findByUserId(userId);
     }
 }

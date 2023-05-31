@@ -2,6 +2,7 @@ package com.Revature.eCommerce.screens;
 
 import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.CartItem;
+import com.Revature.eCommerce.models.History;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.services.*;
 import com.Revature.eCommerce.utils.Session;
@@ -22,8 +23,10 @@ public class CartScreen implements IScreen
         private final ProductService productService;
         private final HistoryService historyService;
         private final RouterService router;
+        
         ArrayList<CartItem> items;
         Optional<Cart> cart;
+        Optional<History> history;
         private int amountSpent;
     public CartScreen(CartService cartService,ProductService productService,HistoryService historyService, RouterService router, Session session)
     {
@@ -34,6 +37,8 @@ public class CartScreen implements IScreen
         this.session = session;
         this.items = new ArrayList<>();
         cart= cartService.getCart(session.getId());
+        history = historyService.findByUserId(session.getId());
+  
     }
 
     @Override
@@ -205,7 +210,8 @@ public class CartScreen implements IScreen
                             continue;
                         }
                         control = false;
-                        historyService.createOrder(items, session.getId());
+   
+                        historyService.createOrder(items, history.get().getId());
                         cartService.deleteCart(cart.get().getId());
                         cartService.newCart(session.getId());
                         System.out.print("Order submitted!");
