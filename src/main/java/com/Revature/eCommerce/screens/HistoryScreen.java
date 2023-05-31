@@ -1,8 +1,11 @@
 package com.Revature.eCommerce.screens;
 
+import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.models.History;
 import com.Revature.eCommerce.models.HistoryItem;
+import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.services.HistoryService;
+import com.Revature.eCommerce.services.ProductService;
 import com.Revature.eCommerce.services.RouterService;
 import com.Revature.eCommerce.utils.Session;
 import org.apache.logging.log4j.LogManager;
@@ -110,7 +113,7 @@ public class HistoryScreen implements IScreen {
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
 
-            System.out.println("Product ID:: " + history.getProductId());
+            System.out.println("Product Name: " + getProduct(history.getProductId()).getProductName());
             System.out.println("Pricing: $" + history.getPrice());
             System.out.println("Quantity: " + history.getQuantity());
             System.out.println("-----------------------------");
@@ -156,6 +159,15 @@ public class HistoryScreen implements IScreen {
 
             }
         }
+
+    }
+
+    public Product getProduct(String product_id)
+    {
+        return new ProductService(new ProductDAO()).getProduct(product_id);
     }
 }
+
+
+
 

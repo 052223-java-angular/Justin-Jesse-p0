@@ -11,7 +11,6 @@ import com.Revature.eCommerce.models.User;
  * This class is a layer between the screen class and DAO class
  */
 public class UserService {
-
     private final UserDAO userDao;
     private final RoleService roleServices;
 

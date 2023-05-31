@@ -94,6 +94,7 @@ public class ReviewsAndRatingsScreen implements IScreen {
                 System.out.println("Rating: " + review.getRating());
                 System.out.println("Review: " + review.getReview());
                 System.out.println("-----------------------------");
+
             }
         }
 

@@ -104,7 +104,7 @@ public class BrowseScreen implements IScreen {
             System.out.println("Product List:");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
-            System.out.println("Product ID: " + product.getProductId());
+            //System.out.println("Product ID: " + product.getProductId());
             System.out.println("Name: " + product.getProductName());
             System.out.println("Category ID: " + product.getCategoryId());
             System.out.println("Pricing: $" + product.getPricing());

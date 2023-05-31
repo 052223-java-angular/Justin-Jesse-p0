@@ -4,7 +4,6 @@ import java.util.Scanner;
 import com.Revature.eCommerce.dao.CartDAO;
 import java.util.UUID;
 import com.Revature.eCommerce.dao.HistoryDAO;
-import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.History;
 import com.Revature.eCommerce.services.CartService;
 import com.Revature.eCommerce.services.HistoryService;
@@ -104,7 +103,7 @@ public class MenuScreen implements IScreen {
     {
         if (new CartService(new CartDAO()).doesUserHaveCart(userId))
         {
-            System.out.println("Cart Already There");
+            //System.out.println("Cart Already There");
         }
         else{
             new CartService(new CartDAO()).createCart(userId);
@@ -120,7 +119,7 @@ public class MenuScreen implements IScreen {
         historyService = new HistoryService (new HistoryDAO(), new History());
         if (historyService.doesUserHaveHistory(userId))
         {
-            System.out.println("History Already There");
+            //System.out.println("History Already There");
         }
         else{
             System.out.println("History Being Made");
