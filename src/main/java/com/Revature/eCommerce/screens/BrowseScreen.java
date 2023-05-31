@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * This class allows users to browse through available products
+ */
 public class BrowseScreen implements IScreen {
     private static Logger logger = LogManager.getLogger(BrowseScreen.class);
 
@@ -36,7 +39,7 @@ public class BrowseScreen implements IScreen {
     }
 
     /**
-     * Starts the browsing screen
+     * Starts the browsing screen where users can view products, add products to cart, view reviews
      * @param scan-user input
      */
     @Override
@@ -90,14 +93,14 @@ public class BrowseScreen implements IScreen {
      */
     public void displayProducts() {
         logger.info("Displayed products");
-        List<Product> productList = productService.getAllProducts();
+        List<Product> productList = productService.getAllProducts();// Gets all the products in DB
         int listSize = productList.size();
         boolean exit = false; 
         int index = 0;
         Scanner scan = new Scanner(System.in);
     
         while (!exit) {
-            Product product = productList.get(index);
+            Product product = productList.get(index);// iterates and displays products for user
             System.out.println("Product List:");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
