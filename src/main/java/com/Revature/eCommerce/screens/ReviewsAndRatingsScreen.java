@@ -81,7 +81,7 @@ public class ReviewsAndRatingsScreen implements IScreen {
         System.out.println("Reviews and Ratings:");
         System.out.println("-----------------------------");
         System.out.println("Product ID: " + productId);
-        System.out.println("Number of Reviews: " + reviews.size());
+       // System.out.println("Number of Reviews: " + reviews.size());
         System.out.println("-----------------------------");
 
         if (reviews.isEmpty()) {
@@ -90,7 +90,7 @@ public class ReviewsAndRatingsScreen implements IScreen {
         } else {
             for (ReviewsAndRatings review : reviews) {//Displays reviews from any user
                 logger.info("Displayed review for user");
-                System.out.println("User ID: " + review.getUser_id());
+                //System.out.println("User ID: " + review.getUser_id());
                 System.out.println("Rating: " + review.getRating());
                 System.out.println("Review: " + review.getReview());
                 System.out.println("-----------------------------");
@@ -107,10 +107,10 @@ public class ReviewsAndRatingsScreen implements IScreen {
      */
     private void leaveReview(Scanner scan) {
         logger.info("Starting review and rating process");
-        System.out.println("Enter your review and rating (out of 5):");
-        System.out.print("Review: ");
+        System.out.println("Enter your review and rating:\n");
+        System.out.print("Enter Review: ");
         String review = scan.nextLine();
-        System.out.print("Rating: ");
+        System.out.print("Enter Rating (out of 5): ");
         int rating = Integer.parseInt(scan.nextLine());
 
         
