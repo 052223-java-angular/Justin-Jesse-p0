@@ -55,16 +55,21 @@ public class UserServiceTest extends TestCase {
 
     public void testCheckUser()
     {
-        /*
+        String invalidUsername = "";
+        String invalidPassword = "";
         String username = "testUser";
         String password = "password";
         Role role = new Role("cd7a196a-b4a1-4f2a-a6fc-902cc887ab71", "USER");
         User user = new User(username, BCrypt.hashpw(password, BCrypt.gensalt()), role.getId());
 
         when(roleService.findByName("USER")).thenReturn(role);
-        doNothing().when(userDao).save(any(User.class));
-        User result = userService.register(username, password);
-        when(userDao.checkUser(user)).thenReturn(Optional.of(new User()));*/
+        when(userDao.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userDao.checkUser(user)).thenReturn(any(User.class));
+
+        User result = userService.checkUser(username, password);
+
+        assertEquals(username, result.getUsername());
+        assertNotEquals(username, invalidUsername);
     }
 
     public void testIsValidUsername()

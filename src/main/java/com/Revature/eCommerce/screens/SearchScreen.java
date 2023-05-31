@@ -5,6 +5,8 @@ import com.Revature.eCommerce.models.Cart;
 import com.Revature.eCommerce.models.CartItem;
 import java.util.UUID;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+
 import com.Revature.eCommerce.utils.Session;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.models.Category;
@@ -35,7 +37,7 @@ public class SearchScreen implements IScreen {
 
     /**
      * Prompts the user to search for product by name, category, price or return to menu
-     * @param scan
+     * @param scan-user input
      */
     @Override
     public void start(Scanner scan) {
@@ -94,14 +96,14 @@ public class SearchScreen implements IScreen {
 
     /**
      * Displays the product by name
-     * @param scan
+     * @param scan-usre input
      */
     public void DisplaySearchedProductName(Scanner scan) {
         clearScreen();
         System.out.println("Enter Product Name: ");
         String name = scan.nextLine();
         logger.info("User entered product for: {} ",name);
-        List<Product> productList = productService.findProductByName(name);
+        List<Product> productList = productService.findProductByName(name);//gets products from DB
         int listSize = productList.size();
         boolean exit = false; 
         int index = 0;
@@ -118,7 +120,7 @@ public class SearchScreen implements IScreen {
 
         while(!exit){
 
-        Product product = productList.get(index);
+        Product product = productList.get(index);//Displays the product
             System.out.println("Product List:");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
@@ -147,7 +149,8 @@ public class SearchScreen implements IScreen {
             }
             if (input.equalsIgnoreCase("A")) {
                 clearScreen();
-                exit = true;   
+                exit = true;
+                logger.info("Starting add to cart process");
                 addToCart(product);
             }
             if (input.equalsIgnoreCase("X")){
@@ -194,7 +197,7 @@ public class SearchScreen implements IScreen {
         System.out.println("Category List:");
         System.out.println("-----------------------------");
 
-           for (int i = 0 ; i < listSize; i++){
+           for (int i = 0 ; i < listSize; i++){//Displays the categories for user to select
             Category category = categoryList.get(i);
             System.out.println("Category " + category.getCategory_ID() + " " + category.getCategory_Name());
 
@@ -212,6 +215,7 @@ public class SearchScreen implements IScreen {
 
             if (input.equalsIgnoreCase("X")){
                 clearScreen();
+                logger.info("Navigating to menu");
                 router.navigate("/menu", scan, "");
                 scanner.close();
 
@@ -278,7 +282,7 @@ public class SearchScreen implements IScreen {
             System.out.println("Product List:");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
-            System.out.println("Product ID: " + product.getProductId());
+            //System.out.println("Product ID: " + product.getProductId());
             System.out.println("Name: " + product.getProductName());
             System.out.println("Category ID: " + product.getCategoryId());
             System.out.println("Pricing: $" + product.getPricing());
@@ -337,19 +341,38 @@ public class SearchScreen implements IScreen {
 
     /**
      * Displays the products by the price range Min - Max
-     * @param scan
+     * @param scan - user input
      */
     public void DisplaySearchedProductPricing(Scanner scan) {
+        int min = 0;
+        int max = 0;
+        
         clearScreen();
+        try{
         System.out.println("Enter Minimum Value ");
-        int min = scan.nextInt();
+        min = scan.nextInt();
         scan.nextLine();
         clearScreen();
-    
+        }
+        catch(InputMismatchException e){
+         System.out.println("Input must be a number");
+         System.out.println("Press anything to try again...");
+         scan.nextLine();
+         DisplaySearchedProductPricing(scan);
+        }
+        try{
         System.out.println("Enter Maximum Value ");
-        int max = scan.nextInt();
+        max = scan.nextInt();
         scan.nextLine();
         clearScreen();
+        }
+
+        catch(InputMismatchException e){
+            System.out.println("Input must be a number");
+            System.out.println("Press anything to try again...");
+            scan.nextLine();
+            DisplaySearchedProductPricing(scan);
+        }
         logger.debug("Displaying products by pricing min{}, max{}", min,max);
         List<Product> productList = productService.findProductByPricing(min, max);
         int listSize = productList.size();
@@ -397,7 +420,8 @@ public class SearchScreen implements IScreen {
 
             if (input.equalsIgnoreCase("A")) {
                 clearScreen();
-                exit = true;   
+                exit = true;
+                logger.info("Starting add to product process");
                 addToCart(product);
             }
             if (input.equalsIgnoreCase("X")) {
@@ -427,9 +451,13 @@ public class SearchScreen implements IScreen {
         }
     }
 
+    /**
+     * User can add product to cart
+     * @param product - the product to add
+     */
     private void addToCart(Product product) {
         Scanner scan = new Scanner(System.in);
-    
+        logger.info("Add product to cart process started");
         Optional<Cart> optionalCart = cartService.getCart(session.getId());
         Cart cart;
         if (optionalCart.isPresent()) {
@@ -437,7 +465,7 @@ public class SearchScreen implements IScreen {
         } else {
     
             cart = new Cart(UUID.randomUUID().toString(), session.getId(), 0);
-            cartService.newCart(cart.getId());
+            cartService.newCart(cart.getId());// creates a new cart if cart is not present
         }
     
         ArrayList<CartItem> cartItems = cartService.getCartItems(cart.getId());
@@ -454,9 +482,11 @@ public class SearchScreen implements IScreen {
                     cart.getId(), 1, product.getPricing());
             cartService.setCart(product, newItem, cart);
             System.out.println("Item added to the cart!");
+            logger.info("User successfully added product to {} cart : ", product);
         }
     
         System.out.print("\nPress enter to return to browse screen");
+        logger.info("Navigating to browse screen");
         scan.nextLine();
         router.navigate("/browse", scan, "");
     }

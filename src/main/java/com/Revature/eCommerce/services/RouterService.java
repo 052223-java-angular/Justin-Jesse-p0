@@ -10,6 +10,9 @@ import com.Revature.eCommerce.dao.CategoryDAO;
 import com.Revature.eCommerce.dao.ReviewsAndRatingsDAO;
 import com.Revature.eCommerce.models.Product;
 import com.Revature.eCommerce.models.History;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class RouterService {
     private Session session;
     private Product product;

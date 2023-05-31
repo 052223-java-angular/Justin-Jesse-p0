@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.ArrayList;
 public class HistoryDAO implements CrudDAO{
 
-
-
     public void save(String historyItemId, CartItem item, String historyId)
     {try (Connection conn = ConnectionFaction.getInstance().getConnection()) {
         String sql = "INSERT INTO HISTORY_ITEMS (history_Items_ID, quantity, price, history_ID, product_ID) VALUES (?, ?, ?, ?, ?)";
@@ -26,7 +24,7 @@ public class HistoryDAO implements CrudDAO{
             ps.setString(1,historyItemId);
             ps.setInt(2, item.getQuantity());
             ps.setInt(3, item.getPrice());
-            ps.setString(4, historyId);// will change, just for testing
+            ps.setString(4, historyId);
             ps.setString(5, item.getProductId());
             ps.executeUpdate();
         }

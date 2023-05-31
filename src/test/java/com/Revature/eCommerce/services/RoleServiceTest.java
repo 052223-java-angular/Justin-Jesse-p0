@@ -23,17 +23,15 @@ public class RoleServiceTest extends TestCase {
     }
 
 
-    /*public void testFindByName()
-    {
+    public void testFindByName() {
         String role = "USER";
-        Role mockRole = new Role("id", role);
-        when(roleService.findByName(role)).thenReturn(Optional.of(new Role()));
-
-// Invoke the code under test
+        Role invalidRole;
+        Role validRole = new Role("id", role);
+        when(roleDao.findByName(role)).thenReturn(Optional.of(validRole));
         Optional<Role> result = Optional.ofNullable(roleService.findByName(role));
 
-// Verify the result using assertions
         assertTrue(result.isPresent());
-        assertEquals(mockRole, result.get());
-    }*/
+        assertEquals(role, validRole.getRoleName());
+
+    }
 }

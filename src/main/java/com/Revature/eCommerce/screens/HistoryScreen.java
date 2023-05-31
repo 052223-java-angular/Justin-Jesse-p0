@@ -1,25 +1,28 @@
 package com.Revature.eCommerce.screens;
-import java.util.Scanner;
-import com.Revature.eCommerce.utils.Session;
-import com.Revature.eCommerce.models.Product;
+
+import com.Revature.eCommerce.dao.ProductDAO;
 import com.Revature.eCommerce.models.History;
-import com.Revature.eCommerce.services.RouterService;
-import com.Revature.eCommerce.services.ProductService;
-import com.Revature.eCommerce.services.HistoryService;
 import com.Revature.eCommerce.models.HistoryItem;
-import com.Revature.eCommerce.services.ReviewsAndRatingsService;
-import com.Revature.eCommerce.screens.ReviewsAndRatingsScreen;
-import java.util.Optional;
+import com.Revature.eCommerce.models.Product;
+import com.Revature.eCommerce.services.HistoryService;
+import com.Revature.eCommerce.services.ProductService;
+import com.Revature.eCommerce.services.RouterService;
+import com.Revature.eCommerce.utils.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
-//import com.Revature.eCommerce.dao.ProductDAO;
-//@AllArgsConstructor
-//@NoArgsConstructor
+import java.util.Optional;
+import java.util.Scanner;
+
+/**
+ * This class displays the user order history
+ */
 public class HistoryScreen implements IScreen {
+    private static Logger logger = (Logger) LogManager.getLogger(HistoryScreen.class);
     private Session session;
-    //private Product product;
     private final RouterService router;
     private final HistoryService historyService;
-    //private final History history;
     Optional<History> history;
     
     
@@ -27,16 +30,19 @@ public class HistoryScreen implements IScreen {
     {
         this.router = router; 
         this.session = session;
-        //this.product = product;
         this.historyService = historyService;
-        //this.history = history;
         history = historyService.findByUserId(session.getId());
     }
 
+    /**
+     * Start method of the history screen to display previous orders from user
+     * @param scan-user input
+     */
     @Override
     public void start(Scanner scan) {
         String input = "";
 
+        logger.info("Navigated to order history screen");
         exit: {
             while (true) {
                 clearScreen();
@@ -48,6 +54,7 @@ public class HistoryScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                     case "":
+                        logger.info("Navigating to menu screen");
                     router.navigate("/menu", scan, "");
                         break exit;
                     case "2":
@@ -59,17 +66,20 @@ public class HistoryScreen implements IScreen {
                     case "5":
                         break exit;
 
-                    case "R":
+                    case "r":
                         clearScreen();
                         router.navigate("/reviews", scan, "");
                             break exit;
                     case "x":
                     clearScreen();
+                    logger.info("Navigating to menu");
                         break exit;
                     default:
                         clearScreen();
+                        logger.warn("Invalid input for user");
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
+                        logger.info("restarting order history");
                         scan.nextLine();
                         break;
                 }
@@ -82,9 +92,14 @@ public class HistoryScreen implements IScreen {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    public void displayOrders() {
 
-        List<HistoryItem> historyList = historyService.getAllHistoryById(history.get().getId());
+    /**
+     * Displays order history of user
+     */
+    public void displayOrders() {
+        logger.info("Displaying order history");
+
+        List<HistoryItem> historyList = historyService.getAllHistoryById(history.get().getId());// gets a list of history items linked to user
         int listSize = historyList.size();
         boolean exit = false; 
         int index = 0;
@@ -92,15 +107,13 @@ public class HistoryScreen implements IScreen {
         
         while (!exit) {
             try{
-            HistoryItem history = historyList.get(index);
+            HistoryItem history = historyList.get(index);// displays the item of that a customer bought
             
-     
-            //ProductService product = product.getProduct(product.getProduct(history.getProductId()));
             System.out.println("History Item Purchases");
             System.out.println("-----------------------------");
             System.out.println("Username: " + session.getUsername() + "\n");
-            //System.out.println("History ID:" + history.getHistoryId());
-            System.out.println("Product ID:: " + history.getProductId());
+
+            System.out.println("Product Name: " + getProduct(history.getProductId()).getProductName());
             System.out.println("Pricing: $" + history.getPrice());
             System.out.println("Quantity: " + history.getQuantity());
             System.out.println("-----------------------------");
@@ -116,13 +129,16 @@ public class HistoryScreen implements IScreen {
             if (input.equalsIgnoreCase("X")) {
                 clearScreen();
                 exit = true;
+                logger.info("Navigating to menu");
                 router.navigate("/menu", scan, "");
             } 
              else {
                 clearScreen();
                 if (input.equalsIgnoreCase("B")) {
+                    logger.info("User viewing previous product {}");
                     index--;
                 } else {
+                    logger.info("User viewing next product");
                     index++;
                 }
                 if (index >= listSize) {
@@ -134,13 +150,24 @@ public class HistoryScreen implements IScreen {
             }
         }
             catch(IndexOutOfBoundsException e){
+                logger.warn("No order history to display");
                 System.out.println("No Purchase History!\n");
                 System.out.println("Press Anything To Return to Menu");
                 scan.nextLine();
+                logger.info("Navigating to menu");
                 router.navigate("/menu", scan, "");
 
             }
         }
+
+    }
+
+    public Product getProduct(String product_id)
+    {
+        return new ProductService(new ProductDAO()).getProduct(product_id);
     }
 }
+
+
+
 

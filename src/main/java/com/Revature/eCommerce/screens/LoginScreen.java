@@ -24,7 +24,7 @@ public class LoginScreen implements IScreen
 
     /**
      * Displays the login screen where users enter the username and password
-     * @param scan
+     * @param scan - user input
      */
     @Override
     public void start(Scanner scan)

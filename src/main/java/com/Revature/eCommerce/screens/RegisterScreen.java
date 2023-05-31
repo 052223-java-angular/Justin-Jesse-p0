@@ -9,20 +9,16 @@ import com.Revature.eCommerce.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-//@AllArgsConstructor
-public class RegisterScreen implements IScreen 
+/**
+ * Users can register an account to access features
+ */
+public class RegisterScreen implements IScreen
 {
     private static Logger logger = LogManager.getLogger(RegisterScreen.class);
     private final UserService userService;
     private final RouterService router;
     private Session session;
 
-    /**
-     * This class registers a new user
-     * @param userService
-     * @param router
-     * @param session
-     */
     public RegisterScreen(UserService userService, RouterService router, Session session)
     {
         this.userService = userService;
