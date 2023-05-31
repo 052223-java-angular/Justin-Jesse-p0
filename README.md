@@ -109,4 +109,3 @@ Within this project you can do the following
     - Delete an item - You can remove any item from your cart
 
 - **Order History**: Once you have checked out you can view your previously bought items from every order
--
