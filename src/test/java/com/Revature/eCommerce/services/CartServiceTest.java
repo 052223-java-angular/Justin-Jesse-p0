@@ -104,7 +104,7 @@ public class CartServiceTest extends TestCase {
         CartItem item = new CartItem(itemId, "product1", "cart1", 1, 10);
         doNothing().when(cartDao).delete(itemId);
 
-        //cartService.deleteCart(item);
+        cartService.deleteItem(item);
 
         verify(cartDao).delete(itemId);
     }
@@ -117,7 +117,7 @@ public class CartServiceTest extends TestCase {
 
         cartService.deleteCart(item.getCartId());
 
-        verify(cartDao).delete(itemId);
+        verify(cartDao).deleteCart(itemId);
     }
 
     public void testNewCart() {
@@ -127,5 +127,29 @@ public class CartServiceTest extends TestCase {
         cartService.newCart(userId);
 
         verify(cartDao).update(userId);
+    }
+
+    public void testSetCart() {
+        String userId = "User1";
+        Product product = new Product("P1","Product",100,"Description");
+        CartItem cartItem = new CartItem("CI1","P1","C1",1,100);
+        Cart cart = new Cart("C1",userId,100);
+        doNothing().when(cartDao).setCart(product, cartItem, cart);
+        cartService.setCart(product, cartItem, cart);
+        verify(cartDao).setCart(product, cartItem, cart);
+    }
+
+    public void testDoesUserHaveCart() {
+        String userId = "UserId";
+        when(cartDao.getCart(userId)).thenReturn(Optional.of(new Cart()));
+        boolean result = cartService.doesUserHaveCart(userId);
+        assertTrue(result);
+    }
+
+    public void testCreateCart() {
+        String userId = "UserId";
+        doNothing().when(cartDao).createCart(userId);
+        cartService.createCart(userId);
+        verify(cartDao).createCart(userId);
     }
 }

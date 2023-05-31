@@ -21,9 +21,6 @@ public class HistoryService {
 
 
     public void createOrder(ArrayList<CartItem> items, String historyId) {
-
-
-
         for (CartItem item : items)
         {
             String historyItemId = UUID.randomUUID().toString();
@@ -31,10 +28,11 @@ public class HistoryService {
         }
 
     }
+/**
     public List<HistoryItem> getAllHistory(){
         List<HistoryItem> history = historyDao.getAllHistory();
         return history;
-    }
+    }*/
 
     public List<HistoryItem> getAllHistoryById(String historyId){
         List<HistoryItem> History = historyDao.getAllHistoryById(historyId);

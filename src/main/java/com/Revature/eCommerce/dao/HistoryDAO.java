@@ -24,7 +24,7 @@ public class HistoryDAO implements CrudDAO{
             ps.setString(1,historyItemId);
             ps.setInt(2, item.getQuantity());
             ps.setInt(3, item.getPrice());
-            ps.setString(4, historyId);// will change, just for testing
+            ps.setString(4, historyId);
             ps.setString(5, item.getProductId());
             ps.executeUpdate();
         }

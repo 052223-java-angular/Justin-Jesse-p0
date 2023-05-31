@@ -41,7 +41,6 @@ public class UserService {
             }
         }
         return null;
-      // return  userDao.checkUser(username, password);
     }
 
     public boolean isValidUsername(String username) {
