@@ -12,6 +12,11 @@ import lombok.AllArgsConstructor;
     public class RoleService {
         private final RoleDAO roleDao;
 
+        /**
+         * Finds a role based on userName
+         * @param name
+         * @return
+         */
         public Role findByName(String name) {
             Optional<Role> roleOpt = roleDao.findByName(name);
 
