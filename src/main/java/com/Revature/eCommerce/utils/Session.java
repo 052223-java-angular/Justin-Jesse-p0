@@ -14,7 +14,7 @@ import com.Revature.eCommerce.models.User;
 public class Session {
     private String id;
     private String username;
-
+    private String historyId;
 
     public void setSession(User user) {
         this.id = user.getUserId();

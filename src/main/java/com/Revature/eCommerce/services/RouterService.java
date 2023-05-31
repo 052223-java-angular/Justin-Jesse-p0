@@ -33,7 +33,7 @@ public class RouterService {
                 break;
 
             case "/menu":
-                new MenuScreen(this, session).start(scan);
+                new MenuScreen(this, session,getHistoryService()).start(scan);
                 break;
 
             case "/register":
@@ -58,7 +58,7 @@ public class RouterService {
                 break;
                
             case "/history":
-                new HistoryScreen(this, session, getHistoryService(), history).start(scan);
+                new HistoryScreen(this, session, getHistoryService()).start(scan);
                 break;
 
             default:
@@ -82,7 +82,7 @@ public class RouterService {
         return new CartService(new CartDAO());
     }
     private HistoryService getHistoryService() {
-        return new HistoryService(new HistoryDAO());
+        return new HistoryService(new HistoryDAO(), history);
     }
 
 

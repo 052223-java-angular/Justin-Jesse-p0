@@ -54,9 +54,9 @@ FOREIGN KEY (cart_ID) REFERENCES CART(cart_ID)
 );
 
 CREATE TABLE HISTORY(
-history_ID VARCHAR(255) NOT null PRIMARY KEY ,
+history_ID VARCHAR(255) NOT NULL PRIMARY KEY ,
 user_ID VARCHAR(255) NOT NULL ,
-total_Cost float,
+total_Cost int,
 FOREIGN KEY (user_ID) REFERENCES USERS(user_ID)
 );
 

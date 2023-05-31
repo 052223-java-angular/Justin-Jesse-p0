@@ -5,7 +5,7 @@ import com.Revature.eCommerce.models.CartItem;
 import junit.framework.TestCase;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import com.Revature.eCommerce.models.History;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -16,9 +16,10 @@ public class HistoryServiceTest extends TestCase {
     private HistoryService historyService;
     @Mock
     HistoryDAO historyDao;
+    History history;
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        historyService = new HistoryService(historyDao);
+        historyService = new HistoryService(historyDao, history);
     }
 
     public void tearDown() throws Exception {
