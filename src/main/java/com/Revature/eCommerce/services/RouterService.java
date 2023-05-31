@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class RouterService {
-    private Logger logger = LogManager.getLogger(RouterService.class);
     private Session session;
     private Product product;
     private History history;

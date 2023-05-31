@@ -30,7 +30,10 @@ Within the app users can access features such as viewing products, adding to car
     - $ git clone https://github.com/052223-java-angular/Justin-Jesse-p0.git
 - Access from your repository
     - cd Justin-Jess-p0
-      -Install the following dependencies using maven
+      -Install the following [dependencies](#dependencies) using maven
+- Create an application.properties file and insert the following
+  - docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+-Once your docker is connected to your database 
 - Run the eCommerce class file to launch the application 
 ## Dependencies
 
